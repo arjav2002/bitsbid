@@ -1,0 +1,14 @@
+#pull official base image
+FROM node:alpine
+
+WORKDIR ./app
+
+COPY package.json ./
+
+RUN npm install yarn -g --force
+RUN yarn install
+
+#COPY . .
+
+CMD ["dir"]
+CMD ["yarn", "list", "--pattern", "express"]
