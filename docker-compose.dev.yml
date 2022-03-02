@@ -1,0 +1,24 @@
+version: '3.7'
+
+services:
+  frontend:
+    build:
+      context: ./client
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./client/src:/app/src
+      - ./client/public:/app/public
+    depends_on:
+      - backend
+    image: bitsbid-client    
+
+  backend:
+    build:
+      context: ./server
+      dockerfile: Dockerfile.dev
+    volumes:
+      - ./server/src:/app/src
+    env_file: .env
+    environment:
+      - NODE_ENV=development
+    image: bitsbid-server

@@ -4,11 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon src/index.js"
   },
-  "repository": "git+https://github.com/arjav2002/bitsbid.git",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arjav2002/bitsbid.git"
+  },
   "keywords": [],
-  "author": "Ayush",
+  "author": "",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/arjav2002/bitsbid/issues"
@@ -17,7 +21,7 @@
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.17.3",
-    "mongoose": "^6.2.2",
+    "node": "^17.5.0",
     "nodemon": "^2.0.15"
   }
 }

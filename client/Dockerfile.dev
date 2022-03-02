@@ -1,0 +1,13 @@
+#Dockerfile for React client
+
+#Build react client
+FROM node:alpine
+ 
+WORKDIR /app
+
+COPY package.json ./
+
+RUN npm install yarn -g --force
+RUN yarn
+
+CMD ["yarn", "start"]
