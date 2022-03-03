@@ -9,3 +9,5 @@ services:
       - ./client/src:/app/src
       - ./client/public:/app/public
     image: bitsbid-client    
+    ports:
+      - 3000:3000

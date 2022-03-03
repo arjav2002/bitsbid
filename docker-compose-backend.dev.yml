@@ -8,6 +8,6 @@ services:
     volumes:
       - ./server/src:/app/src
     env_file: .env
-    environment:
-      - NODE_ENV=development
     image: bitsbid-server
+    ports:
+      ${PORT}:${PORT}
