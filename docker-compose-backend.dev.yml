@@ -7,6 +7,8 @@ services:
       dockerfile: Dockerfile.dev
     volumes:
       - ./server/src:/app/src
+      - ./client/src:/app/client/src
+      - ./client/public:/app/client/public
     env_file: .env
     image: bitsbid-server
     ports:
