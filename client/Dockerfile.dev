@@ -11,3 +11,5 @@ RUN npm install yarn -g --force
 RUN yarn
 
 CMD ["yarn", "start"]
+
+# npm install @mui/material @emotion/react @emotion/styled
