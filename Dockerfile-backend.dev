@@ -1,0 +1,22 @@
+#pull official base image
+FROM node:alpine
+
+WORKDIR /app
+
+COPY ./server/package.json .
+
+RUN npm install yarn -g --force
+RUN yarn
+
+WORKDIR /app/client
+COPY ./client/package.json .
+COPY ./client/public ./public
+COPY ./client/src ./src
+COPY ./client/webpack.config.js .
+COPY ./client/.env .
+
+RUN yarn
+RUN yarn build
+
+WORKDIR /app
+CMD ["yarn", "start"]

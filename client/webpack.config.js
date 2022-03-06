@@ -5,7 +5,8 @@ module.exports = {
     new Dotenv()
   ],
   env: {
-    SERVER_IP: process.env.SERVER_IP,
-    PORT: process.env.PORT
+    SERVER_IP: process.env.REACT_APP_SERVER_IP,
+    PORT: process.env.REACT_APP_PORT,
+    CLIENT_ID: process.env.REACT_APP_CLIENT_ID
   }
 };

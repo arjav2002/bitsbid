@@ -7,6 +7,7 @@ services:
       dockerfile: Dockerfile-backend.dev
     volumes:
       - ./server/src:/app/src
+      - ./client/build:/app/client/build
     env_file: .env
     image: bitsbid-server
     ports:
