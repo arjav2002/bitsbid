@@ -2,8 +2,9 @@
 import { connect } from "react-redux";
 import GoogleLogin from 'react-google-login'
 import axios from 'axios'
-// require('dotenv').config()
-const {SERVER_IP, PORT, REACT_APP_CLIENT_ID} = process.env
+
+//require('dotenv').config()
+const {REACT_APP_SERVER_IP, REACT_APP_PORT, REACT_APP_CLIENT_ID} = process.env
 
 // import { setCurrentUser } from "../../actions/authActions";
 
@@ -12,8 +13,8 @@ const {SERVER_IP, PORT, REACT_APP_CLIENT_ID} = process.env
 const Login = () => {
 
   const responseGoogle = (res) => {
-    console.log(res);
-    const server_url = SERVER_IP + ':' + PORT + '/login'
+    const server_url = 'http://' + REACT_APP_SERVER_IP + ':' + REACT_APP_PORT + '/login'
+    console.log("response google: ", res)
     axios.post(server_url, {token: res.tokenId})
       .then(res => window.location.assign(res.data.redirect))
   }
@@ -35,7 +36,7 @@ const Login = () => {
                     <h2 className="display-5 mb-4">Welcome, {user.name}</h2>
                   </div> */}
                   <GoogleLogin
-                    clientId='760379513088-hujkecmfm49s07n90kmsc9r19nttsd61.apps.googleusercontent.com'
+                    clientId={REACT_APP_CLIENT_ID}
                     buttonText="Login"
                     onSuccess={responseGoogle}
                     onFailure={responseGoogle}

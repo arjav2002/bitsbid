@@ -9,7 +9,8 @@ services:
       - ./server/src:/app/src
       - ./client/src:/app/client/src
       - ./client/public:/app/client/public
+      - ./client/build:/app/client/build
     env_file: .env
     image: bitsbid-server
     ports:
-      ${PORT}:${PORT}
+      - ${PORT}:${PORT}
