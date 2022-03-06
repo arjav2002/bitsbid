@@ -15,8 +15,11 @@ const Login = () => {
   const responseGoogle = (res) => {
     const server_url = 'http://' + REACT_APP_SERVER_IP + ':' + REACT_APP_PORT + '/login'
     console.log("response google: ", res)
+    console.log("server url: ", server_url);
     axios.post(server_url, {token: res.tokenId})
-      .then(res => window.location.assign(res.data.redirect))
+      .then(res => {
+        console.log("post request done");
+      })
   }
 
   return (

@@ -44,26 +44,22 @@ app.get("/", (req, res) => {
 
 app.post('/login', async(req,res)=> {
     //sending token to server
-    // console.log("in post func");
+    //console.log("in post func");
     let token = req.body.token;
     async function verify() {
       const ticket = await client.verifyIdToken({
           idToken: token,
-          audience: CLIENT_ID, 
+          requiredAudience: CLIENT_ID, 
       });
       const payload = ticket.getPayload();
       const userid = payload['sub'];
     }
     await verify()
     .then(()=>{
-         
         res.cookie('session-token',token);
         res.redirect('/dashboard');
-        res.send('success');
-        
     })
     .catch(console.error);
-    console.log("returning");
 })
 
 app.get('/dashboard',checkAuthenticate ,(req,res)=>{
