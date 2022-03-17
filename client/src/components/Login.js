@@ -14,11 +14,12 @@ const Login = () => {
 
   const responseGoogle = (res) => {
     const server_url = 'http://' + REACT_APP_SERVER_IP + ':' + REACT_APP_PORT + '/login'
-    console.log("response google: ", res)
-    console.log("server url: ", server_url);
     axios.post(server_url, {token: res.tokenId})
       .then(res => {
-        console.log("post request done");
+        console.log(res)
+        if(res.data == '/dashboard') {
+          window.location = '/dashboard';
+        }
       })
   }
 

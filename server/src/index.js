@@ -44,26 +44,16 @@ app.get("/", (req, res) => {
 
 app.post('/login', async(req,res)=> {
     //sending token to server
-    //console.log("in post func");
     let token = req.body.token;
-    async function verify() {
-      const ticket = await client.verifyIdToken({
-          idToken: token,
-          requiredAudience: CLIENT_ID, 
-      });
-      const payload = ticket.getPayload();
-      const userid = payload['sub'];
-    }
-    await verify()
-    .then(()=>{
-        res.cookie('session-token',token);
-        res.redirect('/dashboard');
-    })
-    .catch(console.error);
+    
+    const ticket = await client.verifyIdToken({idToken: token, audience: CLIENT_ID});
+
+    res.cookie('session-token',token);
+    res.send('/dashboard');
 })
 
 app.get('/dashboard',checkAuthenticate ,(req,res)=>{
-    req.send('/dashboard');
+    res.send('/dashboard');
 })
 
 app.get('/signout',(req,res)=>{
@@ -85,16 +75,17 @@ function checkAuthenticate(req,res,next){
         user.name = payload.name;
         user.email = payload.email;
         user.picture = payload.picture;
-        console.log(user.picture);
+        //console.log(user.picture);
         const userobj = new User({
             name : user.name,
             email : user.email,
             picture : user.picture
         })
         userobj.save();
-        console.log(userobj);
+        //console.log(userobj);
         // userobj.picture.data : fs.readFileSync(user.picture);
       }
+
       verify()
       .then(()=>{
           req.user = user
