@@ -22,37 +22,40 @@ const {OAuth2Client} = require('google-auth-library');
 CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
 const client = new OAuth2Client(CLIENT_ID);
 
-//middlewares
-// app.engine('.hbs', exphbs({ defaultLayout: 'main', extname: '.hbs' }));
-// app.set('views', path.join(__dirname, 'views'));
-// app.set('view engine', '.hbs');
-
-// app.set('view engine','.ejs');
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.static(path.join("client", "build")));
-
 
 //routes
 app.get("/", (req, res) => {
   res.sendFile(path.join("client", "build", "index.html"), {root: 'app'});
  });
 
-// app.get('/login', (req,res) =>{
-//     res.render('login')
-// })
+ async function findOrCreateUser(obj) {
+    return await User.findOneAndUpdate({email: obj.email}, {$setOnInsert: {name: obj.name, email: obj.email, picture: obj.picture}}, {upsert: true, new: true});
+ }
 
 app.post('/login', async(req,res)=> {
-    //sending token to server
     let token = req.body.token;
-    
     const ticket = await client.verifyIdToken({idToken: token, audience: CLIENT_ID});
-
+    const payload = ticket.getPayload();
+    let user = {};
+    user.name = payload.name;
+    user.email = payload.email;
+    user.picture = payload.picture;
+    const userobj = {
+        name : user.name,
+        email : user.email,
+        picture : user.picture,
+    };
+    await findOrCreateUser(userobj);
+    
     res.cookie('session-token',token);
     res.send('/dashboard');
 })
 
 app.get('/dashboard',checkAuthenticate ,(req,res)=>{
+    console.log(req.user);
     res.send('/dashboard');
 })
 
@@ -65,26 +68,10 @@ function checkAuthenticate(req,res,next){
     let token = req.cookies['session-token'];
 
     let user = {};
-
     async function verify() {
-        const ticket = await client.verifyIdToken({
-            idToken: token,
-            audience: CLIENT_ID,  // Specify the CLIENT_ID of the app that accesses the backend
-        });
-        const payload = ticket.getPayload();
-        user.name = payload.name;
-        user.email = payload.email;
-        user.picture = payload.picture;
-        //console.log(user.picture);
-        const userobj = new User({
-            name : user.name,
-            email : user.email,
-            picture : user.picture
-        })
-        userobj.save();
-        //console.log(userobj);
-        // userobj.picture.data : fs.readFileSync(user.picture);
-      }
+        const ticket = await client.verifyIdToken({idToken: token, audience: CLIENT_ID});
+        user = await User.findOne({email: ticket.getPayload().email});
+    }
 
       verify()
       .then(()=>{
@@ -92,6 +79,7 @@ function checkAuthenticate(req,res,next){
           next();
       })
       .catch(err =>{
+          console.log(err);
           res.redirect('/login')
       });
 }
