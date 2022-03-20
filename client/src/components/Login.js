@@ -1,17 +1,12 @@
-// import React from "react";
-import { connect } from "react-redux";
 import GoogleLogin from 'react-google-login'
 import axios from 'axios'
+import './Login.css'
+import logo from '../img/logo_fin.png'
 
-//require('dotenv').config()
+// require('dotenv').config()
 const {REACT_APP_SERVER_IP, REACT_APP_PORT, REACT_APP_CLIENT_ID} = process.env
 
-// import { setCurrentUser } from "../../actions/authActions";
-
-// import React from 'react'
-
 const Login = () => {
-
   const responseGoogle = (res) => {
     const server_url = 'http://' + REACT_APP_SERVER_IP + ':' + REACT_APP_PORT + '/login'
     axios.post(server_url, {token: res.tokenId})
@@ -26,42 +21,21 @@ const Login = () => {
   return (
     <>
       <div className="login">
-        <div className="dark-overlay login-inner text-light">
-          <div className="container text-center" >
+        <div className="dark-overlay text-light">
+          <div className="container" >
             <div className="row">
               <div className="col-md-12 text-center">
-                <h1 className="display-3 mb-4">BitsBid</h1>
-                <p className="lead">
-                  Login to your google account and start bidding !
-                </p>
-                <hr />
-                  {/* <div>
-                    <br />
-                    <h2 className="display-5 mb-4">Welcome, {user.name}</h2>
-                  </div> */}
+                <img src={logo} class="img-fluid" alt="Responsive image"/>
+                <div className="text-muted">An online auctioning platform</div>
+                <p className="lead mt-5">Login to your google account and start bidding !</p>
+                <hr/>
                   <GoogleLogin
                     clientId={REACT_APP_CLIENT_ID}
-                    buttonText="Login"
+                    buttonText="Login by Google"
                     onSuccess={responseGoogle}
                     onFailure={responseGoogle}
                     cookiePolicy={'single_host_origin'}
                   />
-                  {/* <div className="google-btn-container">
-                    <a href="/auth/google">
-                      <div className="google-btn">
-                        <div className="google-icon-wrapper">
-                          <img
-                            className="google-icon"
-                            src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg"
-                            alt="signin"
-                          />
-                        </div>
-                        <p className="btn-text">
-                          <b>Log in with Google</b>
-                        </p>
-                      </div>
-                    </a>
-                  </div> */}
               </div>
             </div>
           </div>
@@ -71,13 +45,4 @@ const Login = () => {
   )
 }
 
-// const mapStateToProps = state => ({
-//   auth: state.auth
-// });
-
 export default Login
-
-// export default connect(
-//   mapStateToProps,
-//   { setCurrentUser }
-// )(Login);
