@@ -6,7 +6,7 @@ const User = new Schema({
   email:      {type: String, required: true},
   picture:    String,
   bids:       [{itemId: String, bidAmount: {type: Number, min: 0}}],
-  watchlist:  [{String}],
+  watchlist:  [{type: Schema.Types.ObjectId}],
   items:      [{type: Schema.Types.ObjectId}]
 })
 

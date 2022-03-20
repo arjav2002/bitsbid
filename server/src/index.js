@@ -112,6 +112,17 @@ app.post('/item', checkAuthenticate, checkSeller, async(req, res)=> {
     res.status(200).send(item.id);
 })
 
+app.post('/watchlist', checkAuthenticate, async(req, res)=> {
+    try {
+        obj = await Item.findById(req.query.id);
+    } catch(err) {
+        return res.status(500).send("Internal sever error occurred")
+    }
+    if(!obj) return res.status(404).send("Item with given id does not exist.");
+    await User.findByIdAndUpdate(req.user.id, {$addToSet: {watchlist: obj.id}});
+    res.status(200).send("Item added to watchlist.")
+})
+
 app.get('/signout',(req,res)=>{
     res.clearCookie('session-token');
     res.redirect('/login')
