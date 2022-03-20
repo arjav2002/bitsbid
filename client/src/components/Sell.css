@@ -1,0 +1,21 @@
+.img-fluid{
+  margin-top: 5%;
+  width: 30%;
+  height: 35%;
+}
+
+.bg-image {
+  position: relative;
+  background: url("../img/showcase.jpg");
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  width: 202.2vh;
+}
+
+.dark-overlay {
+  background-color: rgba(0, 0, 0, 0.85);
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
