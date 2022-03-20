@@ -11,8 +11,8 @@ const Login = () => {
     const server_url = 'http://' + REACT_APP_SERVER_IP + ':' + REACT_APP_PORT + '/login';
     axios.post(server_url, {token: res.tokenId})
       .then(res => {
-        if(res.data == '/dashboard') {
-          window.location = '/dashboard';
+        if(res.data == '/home') {
+          window.location = '/home';
         }
       })
   }

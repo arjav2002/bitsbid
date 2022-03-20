@@ -1,19 +1,19 @@
-import React, { Component } from "react";
-import Login from "./components/Login";
-import "./App.css";
-import Sell from "./components/Sell";
+import React from "react";
+import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 
-class App extends Component {
-  render() {
-    
+import LoginPage from './pages'
+import HomePage from './pages/home'
+import SellForm from './pages/sellform'
+function App() {
     return (
-      <>
-        <div>
-         <Login />
-        </div>
-      </>
+      <Router>
+        <Routes>
+          <Route exact path='/' element={<LoginPage />}/>
+          <Route path='/home' element={<HomePage />} />
+          <Route path='/sell' element={<SellForm />} />
+        </Routes>
+      </Router>
     );
-  }
 }
 
 export default App;
