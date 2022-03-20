@@ -29,7 +29,7 @@ const Login = () => {
           <div className="container text-center" >
             <div className="row">
               <div className="col-md-12 text-center">
-                <h1 className="display-3 mb-4">BitsBid</h1>
+                <h1 className="display-3 mt-5 mb-4">BitsBid</h1>
                 <p className="lead">
                   Login to your google account and start bidding !
                 </p>

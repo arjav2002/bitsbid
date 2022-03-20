@@ -1,16 +1,16 @@
 import React from 'react'
-import Body from './Body'
 import Footer from './Footer'
+import Item_body from './Item_body'
 import Navbar from './Navbar'
 
-const Home = () => {
+const Item_page = () => {
   return (
     <>
         <Navbar />
-        <Body />
+        <Item_body />
         <Footer />
     </>
   )
 }
 
-export default Home
+export default Item_page

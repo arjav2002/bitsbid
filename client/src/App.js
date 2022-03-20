@@ -6,8 +6,8 @@ import React, { Component } from "react";
 // import { Provider } from "react-redux";
 
 import Login from "./components/Login";
-
-
+import Home from "./components/Home_page";
+import Item_page from "./components/Item_page";
 import "./App.css";
 
 class App extends Component {
@@ -17,6 +17,8 @@ class App extends Component {
       <>
         <div>
          <Login />
+         {/* <Home /> */}
+         {/* <Item_page /> */}
         </div>
       </>
       // <Provider>
