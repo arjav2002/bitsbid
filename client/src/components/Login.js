@@ -8,10 +8,9 @@ const {REACT_APP_SERVER_IP, REACT_APP_PORT, REACT_APP_CLIENT_ID} = process.env
 
 const Login = () => {
   const responseGoogle = (res) => {
-    const server_url = 'http://' + REACT_APP_SERVER_IP + ':' + REACT_APP_PORT + '/login'
+    const server_url = 'http://' + REACT_APP_SERVER_IP + ':' + REACT_APP_PORT + '/login';
     axios.post(server_url, {token: res.tokenId})
       .then(res => {
-        console.log(res)
         if(res.data == '/dashboard') {
           window.location = '/dashboard';
         }
