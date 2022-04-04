@@ -2,10 +2,8 @@ import GoogleLogin from 'react-google-login'
 import axios from 'axios'
 import './Login.css'
 import logo from '../img/logo_fin.png'
-import Home from './Home'
 import { useNavigate } from 'react-router'
 
-// require('dotenv').config()
 const {REACT_APP_SERVER_IP, REACT_APP_PORT, REACT_APP_CLIENT_ID} = process.env
 
 const Login = () => {
@@ -34,7 +32,7 @@ const Login = () => {
                 <p className="lead mt-5">Login to your google account and start bidding !</p>
                 <hr/>
                   <GoogleLogin
-                    clientId='760379513088-hujkecmfm49s07n90kmsc9r19nttsd61.apps.googleusercontent.com'
+                    clientId={REACT_APP_CLIENT_ID}
                     buttonText="Login by Google"
                     onSuccess={responseGoogle}
                     onFailure={responseGoogle}
