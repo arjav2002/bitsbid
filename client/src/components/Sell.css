@@ -1,8 +1,6 @@
-.img-fluid{
-  margin-top: 5%;
-  width: 30%;
-  height: 35%;
-}
+/* .form-group{
+  height: 6vh;
+} */
 
 .bg-image {
   position: relative;
@@ -10,12 +8,17 @@
   background-size: cover;
   background-position: center;
   height: 100vh;
-  width: 202.2vh;
+  width: auto;
 }
 
 .dark-overlay {
-  background-color: rgba(0, 0, 0, 0.85);
+  background-color: rgba(0, 0, 0, 0.75);
   position: absolute;
   width: 100%;
   height: 100%;
+}
+
+.error {
+  padding-left: 43%;
+  color: red;
 }

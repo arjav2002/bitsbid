@@ -1,14 +1,24 @@
 import React from 'react'
-import logo from '../logo_fin.png'
+import logo from '../img/logo_fin.png'
+import { Link } from 'react-router-dom'
+import { useParams } from 'react-router'
 
 const Navbar = () => {
+
+  const { id } = useParams()
+  
   return (
     <nav className="navbar navbar-light bg-light">
     <div className="container-fluid">
-        <a className="navbar-brand"><img src={logo} width='120' height='50' alt="logo here"/></a>
+        <Link to={'/home/'+id}>
+          <a className="navbar-brand"><img src={logo} width='120' height='50' alt="logo here"/></a>
+        </Link>
+        
         <form className="d-flex">
           <input className="form-control me-3" type="search" placeholder="Search" aria-label="Search" />
-          <button className="btn rounded-pill btn-danger ms-3 me-3" type="submit">SELL</button>
+          <Link to={'/sell/'+id}>
+            <button className="btn rounded-pill btn-danger ms-3 me-3" type="submit">SELL</button>
+          </Link>
           <button className="btn">
               <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
               <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>

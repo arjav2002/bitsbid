@@ -1,5 +1,5 @@
 import React from 'react'
-import logo from "../logo_fin.png"
+import logo from "../img/logo_fin.png"
 import caro from "../carousel_img.jpg"
 
 const Carousel = () => {
