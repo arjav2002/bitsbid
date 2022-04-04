@@ -8,6 +8,7 @@ const path = require('path')
 const mongoose = require('mongoose')
 const User = require('./models/user')
 const Item = require('./models/item')
+const bodyParser = require('body-parser')
 
 app.use(express.json())
 app.use(cors())
@@ -29,37 +30,34 @@ app.use(cookieParser());
 app.use(express.static(path.join("client", "build")));
 
 //routes
-app.get("/", (req, res) => {
-  res.sendFile(path.join("client", "build", "index.html"), {root: 'app'});
- });
-
- async function findOrCreateUser(obj) {
+async function findOrCreateUser(obj) {
     return await User.findOneAndUpdate({email: obj.email}, {$setOnInsert: {name: obj.name, email: obj.email, picture: obj.picture}}, {upsert: true, new: true});
- }
+}
 
 app.post('/login', async(req,res)=> {
     let token = req.body.token;
     console.log(token)
-    const ticket = await client.verifyIdToken({idToken: token, audience: CLIENT_ID});
-    const payload = ticket.getPayload();
-    let user = {};
-    user.name = payload.name;
-    user.email = payload.email;
-    user.picture = payload.picture;
-    const userobj = {
-        name : user.name,
-        email : user.email,
-        picture : user.picture,
-    };
-    await findOrCreateUser(userobj);
+    try {
+        const ticket = await client.verifyIdToken({idToken: token, audience: CLIENT_ID});
+        const payload = ticket.getPayload();
+        let user = {};
+        user.name = payload.name;
+        user.email = payload.email;
+        user.picture = payload.picture;
+        const userobj = {
+            name : user.name,
+            email : user.email,
+            picture : user.picture,
+        };
+        await findOrCreateUser(userobj);
+        res.cookie('session-token',token);
+        res.status(200).send('/home');
+    } catch (err) {
+        console.log(err);
+        res.status(500).send('internal server error');
+    }
     
-    res.cookie('session-token',token);
-    res.status(200).send('/dashboard');
-})
-
-app.get('/dashboard', checkAuthenticate, (req, res)=>{
-    console.log(req.user);
-    res.status(200).send('/dashboard');
+    
 })
 
 app.get('/item', checkAuthenticate, async(req, res)=> {
@@ -120,7 +118,35 @@ app.post('/watchlist', checkAuthenticate, async(req, res)=> {
     }
     if(!obj) return res.status(404).send("Item with given id does not exist.");
     await User.findByIdAndUpdate(req.user.id, {$addToSet: {watchlist: obj.id}});
+
     res.status(200).send("Item added to watchlist.")
+})
+
+app.post('/bidItem', checkAuthenticate, async(req, res)=> {
+    let item;
+    
+    try {
+        obj = await Item.findById(req.query.id);
+    } catch(err) {
+        return res.status(500).send("Internal sever error occurred")
+    }
+
+    if(!obj) return res.status(404).send("Item with given id does not exist.");
+
+    if(req.query.bid < obj.minBid) {
+        return res.send(400).send('bid is lesser than minimum bid')
+    }
+    else if(req.query.bid < 1.1*obj.highestBid){
+        return res.status(400).send('increase the bid atleast by 10%')
+    }
+    else {
+        item = await Item.findOneAndUpdate({_id: obj.id}, {
+            highestBid: req.query.bid
+        }, {new: true})
+
+        await User.findOneAndUpdate({email: req.user.email}, {$push: {bids: {itemID : item.id, bidAmount:req.query.bid}}})
+        return res.status(200).send('bid added to user bids');
+    }
 })
 
 app.get('/signout',(req,res)=>{
@@ -148,13 +174,13 @@ async function checkSeller(req, res, next) {
 
 async function checkAuthenticate(req,res,next){
     let token = req.cookies['session-token'];
-
+    
     let user = {};
     async function verify() {
         const ticket = await client.verifyIdToken({idToken: token, audience: CLIENT_ID});
         return await User.findOne({email: ticket.getPayload().email});
     }
-
+    
     try {
         user = await verify();
         req.user = user;
@@ -162,9 +188,16 @@ async function checkAuthenticate(req,res,next){
     }
     catch (err) {
         console.log(err);
-        res.redirect('/login')
     }
 }
+
+app.get("/", (req, res) => {
+    res.sendFile(path.join("client", "build", "index.html"), {root: path.resolve(__dirname, '..')});
+});
+
+app.get("*", checkAuthenticate, (req, res) => {
+    res.sendFile(path.join("client", "build", "index.html"), {root: path.resolve(__dirname, '..')});
+});
 
 const port = process.env.PORT || 3000
 app.listen(port, () => console.log(`listening on port ${port}`))

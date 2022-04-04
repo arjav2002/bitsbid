@@ -7,13 +7,13 @@ import "./App.css";
 import {
   BrowserRouter as Router,
   Routes,
-  Route,
-  useParams,
+  Route
 } from "react-router-dom";
 
-class App extends Component {
-  render() {
-    
+import LoginPage from './pages'
+import HomePage from './pages/home'
+import SellForm from './pages/sellform'
+function App() {
     return (
       <Router>
         <Routes>
@@ -23,7 +23,6 @@ class App extends Component {
         </Routes>
       </Router>
     );
-  }
 }
 
 export default App;

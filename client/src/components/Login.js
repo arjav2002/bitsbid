@@ -3,13 +3,6 @@ import axios from 'axios'
 import './Login.css'
 import logo from '../img/logo_fin.png'
 import Home from './Home'
-import {
-  BrowserRouter as Router,
-  Switch,
-  Link,
-  Route,
-  useParams,
-} from "react-router-dom";
 import { useNavigate } from 'react-router'
 
 // require('dotenv').config()

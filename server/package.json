@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/arjav2002/bitsbid#readme",
   "dependencies": {
+    "body-parser": "^1.19.2",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.0.0",

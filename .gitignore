@@ -1,4 +1,6 @@
 .env
-node_modules
+**/node_modules
 run.sh
 *.lock
+**/.lock
+package-lock.json
