@@ -10,7 +10,7 @@
   background-size: cover;
   background-position: center;
   height: 100vh;
-  width: 202.2vh;
+  width: auto;
 }
 
 .dark-overlay {
