@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import Login from "./components/Login";
 import Sell from "./components/Sell";
-import Home from "./components/Home";
+import Home from "./components/Home_body";
 import "./App.css";
 import {
   BrowserRouter as Router,
