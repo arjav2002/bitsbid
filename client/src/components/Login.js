@@ -13,7 +13,7 @@ const Login = () => {
   const responseGoogle = (res) => {
     const server_url = 'http://' + REACT_APP_SERVER_IP + ':' + REACT_APP_PORT + '/login';
     axios.post(server_url, {token: res.tokenId})
-      .then(res => navigate('/home/'+res.data.id))
+      .then(res => navigate('/home'))
       .catch(err => {
         console.log(err)
         navigate('/')

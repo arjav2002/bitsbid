@@ -1,6 +1,5 @@
 import axios from "axios"
 import { useState } from "react"
-import { useParams } from "react-router"
 import { useNavigate } from "react-router-dom"
 import FormData from 'form-data'
 import "./Sell.css"
@@ -8,44 +7,50 @@ const {REACT_APP_SERVER_IP, REACT_APP_PORT} = process.env
 
 const Sell = (props) => {
 
-  const { id } = useParams()
   const navigate = useNavigate()
 
   const [title, setTitle] = useState("")
   const [endDate, setEndDate] = useState("")
-  const [minBid, setMinBid] = useState()
+  const [endTime, setEndTime] = useState("")
+  const [minBid, setMinBid] = useState("")
   const [desc, setDesc] = useState("")
   const [image, setImage] = useState("")
 
   const handleTitle = e => setTitle(e.target.value)
   const handleEndDate = e => setEndDate(e.target.value)
+  const handleEndTime = e => setEndTime(e.target.value)
   const handleMinBid = e => setMinBid(e.target.value)
   const handleDesc = e => setDesc(e.target.value)
-  const handleImage = (e) => setImage(e.target.value)
+  const handleImage = e => setImage(e.target.value)
 
   const handleSubmit = (e) => {
 
     e.preventDefault()
 
-    let data = new FormData();
-    data.append("id", id)
+    const date = new Date();
+    const d = parseInt(endDate.substring(8))
+    const m = parseInt(endDate.substring(5, 7))
+    const y = parseInt(endDate.substring(0, 4))
+    const h = parseInt(endTime.substring(0, 2))
+    const s = parseInt(endTime.substring(3))
+    date.setFullYear(y, m, d)
+    date.setHours(h)
+    date.setMinutes(s)
+
+    let data = new FormData()
     data.append("title", title)
-    data.append("endDate", endDate)
-    data.append("minBid", minBid)
+    data.append("endDate", date)
+    data.append("minBid", parseInt(minBid))
     data.append("desc", desc)
     data.append("image", image)
 
-      const server_url = 'http://' + REACT_APP_SERVER_IP + ':' + REACT_APP_PORT + '/sell/' + props.id;
-      axios.post(server_url, data)
-      .then(res => navigate(-1))
-      .catch(err => {
-        console.log(err)
-        navigate(-1)
-      })
-  }
-
-  const validate = (values) => {
-    
+    const server_url = 'http://' + REACT_APP_SERVER_IP + ':' + REACT_APP_PORT + '/item';
+    axios.post(server_url, data)
+    .then(res => navigate(-1))
+    .catch(err => {
+      console.log(err)
+      navigate(-1)
+    })
   }
 
   return (
@@ -73,7 +78,16 @@ const Sell = (props) => {
         <div className="col-md-2 text-center">End Date</div>
           <div className="col-md-4 text-center">
             <div className="form-group">
-              <input type="date" className="form-control" required={true} value={endDate} onChange={handleEndDate}/>
+              <input type="date" className="form-control" required={true}  value={endDate} onChange={handleEndDate}/>
+            </div>
+          </div>
+        </div>
+
+        <div className="row justify-content-md-center align-items-center mt-4">
+        <div className="col-md-2 text-center">End Time</div>
+          <div className="col-md-4 text-center">
+            <div className="form-group">
+              <input type="time" className="form-control" required={true}  value={endTime} onChange={handleEndTime}/>
             </div>
           </div>
         </div>
