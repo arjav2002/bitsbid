@@ -1,10 +1,12 @@
 import React from 'react'
 import Card from './Card'
 import Carousel from './Carousel'
+import Navbar from './Navbar'
 
 const Body = () => {
   return (
     <>
+        <Navbar />
         <Carousel />
 
         <div className="container mt-5 mb-5" >
