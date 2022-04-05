@@ -191,6 +191,17 @@ async function checkAuthenticate(req,res,next){
     }
 }
 
+const PAGE_SIZE = 9
+
+app.get("/itemspage", checkAuthenticate, async(req, res) => {
+    const pgno = Number(req.query.pgno)
+    if(!Number.isInteger(pgno) || pgno <= 0) {
+        return res.status(400).send("Page Number is not a Positive Integer")
+    }
+
+    return res.json({items: await Item.find().skip((pgno-1)*PAGE_SIZE).limit(PAGE_SIZE), totalPages: Math.ceil((await Item.count())/PAGE_SIZE)})
+});
+
 app.get("/", (req, res) => {
     res.sendFile(path.join("client", "build", "index.html"), {root: path.resolve(__dirname, '..')});
 });
