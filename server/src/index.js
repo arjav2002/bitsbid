@@ -37,8 +37,9 @@ async function findOrCreateUser(obj) {
 app.post('/login', async(req,res)=> {
     let token = req.body.token;
     console.log(token)
+    console.log(CLIENT_ID)
     try {
-        const ticket = await client.verifyIdToken({idToken: token, audience: CLIENT_ID});
+        const ticket = await client.verifyIdToken({idToken: token, requiredAudience: CLIENT_ID});
         const payload = ticket.getPayload();
         let user = {};
         user.name = payload.name;
@@ -177,7 +178,7 @@ async function checkAuthenticate(req,res,next){
     
     let user = {};
     async function verify() {
-        const ticket = await client.verifyIdToken({idToken: token, audience: CLIENT_ID});
+        const ticket = await client.verifyIdToken({idToken: token, requiredAudience: CLIENT_ID});
         return await User.findOne({email: ticket.getPayload().email});
     }
     

@@ -4,7 +4,7 @@ services:
   backend:
     build:
       context: .
-      dockerfile: Dockerfile-backend.dev
+      dockerfile: Dockerfile-backend-host.dev
     volumes:
       - ./server/src:/app/src
       - ./client/build:/app/client/build
