@@ -1,10 +1,27 @@
-import React from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import Card from './Card'
 import Carousel from './Carousel'
 import Navbar from './Navbar'
+import axios from 'axios'
+
+const {REACT_APP_SERVER_IP, REACT_APP_PORT, REACT_APP_CLIENT_ID} = process.env
 
 const Body = () => {
-  return (
+
+    const [currentPage, setCurrentPage] = useState(1)
+    const [loading, setLoading] = useState(true)
+    const [itemsData, setItemsData] = useState({totalPages: 0, items: []})
+
+    useEffect(async() => {
+        console.log("called")
+        setLoading(true)
+        const fetchUrl = "http://" + REACT_APP_SERVER_IP + ":" + REACT_APP_PORT + `/itemspage?pgno=${currentPage}`
+        const res = await axios.get(fetchUrl)
+        setItemsData(res.data)
+        setLoading(false)
+    }, [currentPage])
+
+    return (
     <>
         <Navbar />
         <Carousel />
@@ -12,8 +29,23 @@ const Body = () => {
         <div className="container mt-5 mb-5" >
             <h3>Items</h3>
 
-            {/* pagination bar */}
-            <nav aria-label="Page navigation example">
+            {
+                loading && (<h3>Loading</h3>)
+            }
+
+            {
+                !loading && (
+                    <>
+                    {
+                    itemsData.items.map(item => (<>{item.name}</>))
+                    }
+                    </>
+                )
+            }              
+        </div>
+
+        {/* pagination bar */}
+        <nav aria-label="Page navigation example">
                 <ul className="pagination justify-content-center">
                     <li className="page-item disabled">
                     <a className="page-link" href="#" tabIndex="-1"> &lt; </a>
@@ -78,10 +110,9 @@ const Body = () => {
                     </li>
                 </ul>
             </nav>  
-        </div>
 
     </>
-  )
+    )
 }
 
 export default Body
