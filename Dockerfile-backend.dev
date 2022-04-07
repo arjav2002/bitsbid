@@ -10,12 +10,13 @@ RUN yarn
 
 WORKDIR /app/client
 COPY ./client/package.json .
+RUN yarn
+
 COPY ./client/public ./public
 COPY ./client/src ./src
 COPY ./client/webpack.config.js .
 COPY ./client/.env .
 
-RUN yarn
 RUN yarn build
 
 WORKDIR /app
