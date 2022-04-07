@@ -3,7 +3,6 @@ import Card from './Card'
 import Carousel from './Carousel'
 import Navbar from './Navbar'
 import axios from 'axios'
-
 const {REACT_APP_SERVER_IP, REACT_APP_PORT, REACT_APP_CLIENT_ID} = process.env
 
 const Body = () => {
