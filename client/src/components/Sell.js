@@ -33,9 +33,10 @@ const Sell = (props) => {
     const y = parseInt(endDate.substring(0, 4))
     const h = parseInt(endTime.substring(0, 2))
     const s = parseInt(endTime.substring(3))
-    date.setFullYear(y, m, d)
+    date.setFullYear(y, m-1, d)
     date.setHours(h)
     date.setMinutes(s)
+    console.log(date)
 
     const server_url = 'http://' + REACT_APP_SERVER_IP + ':' + REACT_APP_PORT + '/item';
     axios.post(server_url, {
