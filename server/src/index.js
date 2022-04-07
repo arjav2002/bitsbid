@@ -151,6 +151,23 @@ app.post('/bidItem', checkAuthenticate, async(req, res)=> {
     }
 })
 
+app.get('/fetchItems',checkAuthenticate, async(req,res) =>{
+
+    try {
+        obj = await User.findById(req.query.id);
+    } catch(err) {
+        return res.status(500).send("Internal sever error occurred")
+    }
+
+    if(!obj) return res.status(404).send("No user with given ID exists..");
+
+    itemList = obj.items;
+    // for (let i = 0; i < itemList.length; i++) {
+    //     console.log(itemList[i]);
+    // }
+    return res.send(itemList);
+})
+
 app.get('/signout',(req,res)=>{
     res.clearCookie('session-token');
     res.redirect('/login')
