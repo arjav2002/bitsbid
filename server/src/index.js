@@ -37,8 +37,9 @@ async function findOrCreateUser(obj) {
 app.post('/login', async(req,res)=> {
     let token = req.body.token;
     console.log(token)
+    console.log(CLIENT_ID)
     try {
-        const ticket = await client.verifyIdToken({idToken: token, audience: CLIENT_ID});
+        const ticket = await client.verifyIdToken({idToken: token, requiredAudience: CLIENT_ID});
         const payload = ticket.getPayload();
         let user = {};
         user.name = payload.name;
@@ -177,7 +178,7 @@ async function checkAuthenticate(req,res,next){
     
     let user = {};
     async function verify() {
-        const ticket = await client.verifyIdToken({idToken: token, audience: CLIENT_ID});
+        const ticket = await client.verifyIdToken({idToken: token, requiredAudience: CLIENT_ID});
         return await User.findOne({email: ticket.getPayload().email});
     }
     
@@ -190,6 +191,17 @@ async function checkAuthenticate(req,res,next){
         console.log(err);
     }
 }
+
+const PAGE_SIZE = 9
+
+app.get("/itemspage", checkAuthenticate, async(req, res) => {
+    const pgno = Number(req.query.pgno)
+    if(!Number.isInteger(pgno) || pgno <= 0) {
+        return res.status(400).send("Page Number is not a Positive Integer")
+    }
+
+    return res.json({items: await Item.find().skip((pgno-1)*PAGE_SIZE).limit(PAGE_SIZE), totalPages: Math.ceil((await Item.count())/PAGE_SIZE)})
+});
 
 app.get("/", (req, res) => {
     res.sendFile(path.join("client", "build", "index.html"), {root: path.resolve(__dirname, '..')});
