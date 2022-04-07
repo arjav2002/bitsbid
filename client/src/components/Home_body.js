@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from 'react'
 import Card from './Card'
 import Carousel from './Carousel'
+import Navbar from './Navbar'
 import axios from 'axios'
-
 const {REACT_APP_SERVER_IP, REACT_APP_PORT, REACT_APP_CLIENT_ID} = process.env
 
 const Body = () => {
@@ -22,6 +22,7 @@ const Body = () => {
 
     return (
     <>
+        <Navbar />
         <Carousel />
 
         <div className="container mt-5 mb-5" >
@@ -45,12 +46,12 @@ const Body = () => {
         {/* pagination bar */}
         <nav aria-label="Page navigation example">
                 <ul className="pagination justify-content-center">
-                    <li class="page-item disabled">
-                    <a class="page-link" href="#" tabindex="-1"> &lt; </a>
+                    <li className="page-item disabled">
+                    <a className="page-link" href="#" tabIndex="-1"> &lt; </a>
                     </li>
-                    <li className="page-item"><a class="page-link" href="#">1</a></li>
-                    <li className="page-item"><a class="page-link" href="#">2</a></li>
-                    <li className="page-item"><a class="page-link" href="#">3</a></li>
+                    <li className="page-item"><a className="page-link" href="#">1</a></li>
+                    <li className="page-item"><a className="page-link" href="#">2</a></li>
+                    <li className="page-item"><a className="page-link" href="#">3</a></li>
                     <li className="page-item-end">
                     <a className="page-link" href="#"> &gt;</a>
                     </li>
@@ -97,12 +98,12 @@ const Body = () => {
             {/* pagination bar  */}
             <nav aria-label="Page navigation example">
                 <ul className="pagination justify-content-center">
-                    <li class="page-item disabled">
-                    <a class="page-link" href="#" tabindex="-1"> &lt; </a>
+                    <li className="page-item disabled">
+                    <a className="page-link" href="#" tabIndex="-1"> &lt; </a>
                     </li>
-                    <li className="page-item"><a class="page-link" href="#">1</a></li>
-                    <li className="page-item"><a class="page-link" href="#">2</a></li>
-                    <li className="page-item"><a class="page-link" href="#">3</a></li>
+                    <li className="page-item"><a className="page-link" href="#">1</a></li>
+                    <li className="page-item"><a className="page-link" href="#">2</a></li>
+                    <li className="page-item"><a className="page-link" href="#">3</a></li>
                     <li className="page-item-end">
                     <a className="page-link" href="#"> &gt;</a>
                     </li>
