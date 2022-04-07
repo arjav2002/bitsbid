@@ -8,10 +8,13 @@ const path = require('path')
 const mongoose = require('mongoose')
 const User = require('./models/user')
 const Item = require('./models/item')
+const SoldItem = require('./models/solditem')
 const bodyParser = require('body-parser')
 
 app.use(express.json())
 app.use(cors())
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json())
 
 //connect to mongodb
 const dbURL = process.env.MONGO_URL
@@ -21,11 +24,9 @@ mongoose.connect(dbURL, { useNewUrlParser: true, useUnifiedTopology: true})
 
 //google-auth
 const {OAuth2Client} = require('google-auth-library');
-const item = require('./models/item');
 CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
 const client = new OAuth2Client(CLIENT_ID);
 
-app.use(express.json());
 app.use(cookieParser());
 app.use(express.static(path.join("client", "build")));
 
@@ -90,11 +91,11 @@ app.post('/item', checkAuthenticate, checkSeller, async(req, res)=> {
     if(!req.query.id) {
         item = await Item.create({ 
                         sellerId: req.user.email,
-                        name: req.query.name,
-                        description: req.query.description,
-                        endTime: req.query.endTime,
-                        photo: req.query.photo,
-                        minBid: req.query.minBid
+                        name: req.body.name,
+                        description: req.body.description,
+                        endTime: req.body.endTime,
+                        photo: req.body.photo,
+                        minBid: req.body.minBid
                     })
     }
     else {

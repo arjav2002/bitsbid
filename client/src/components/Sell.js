@@ -37,15 +37,14 @@ const Sell = (props) => {
     date.setHours(h)
     date.setMinutes(s)
 
-    let data = new FormData()
-    data.append("title", title)
-    data.append("endDate", date)
-    data.append("minBid", parseInt(minBid))
-    data.append("desc", desc)
-    data.append("image", image)
-
     const server_url = 'http://' + REACT_APP_SERVER_IP + ':' + REACT_APP_PORT + '/item';
-    axios.post(server_url, data)
+    axios.post(server_url, {
+      name: title,
+      endTime: date,
+      minBid: parseInt(minBid),
+      description: desc,
+      photo: image
+    })
     .then(res => navigate(-1))
     .catch(err => {
       console.log(err)

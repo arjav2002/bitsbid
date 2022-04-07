@@ -6,7 +6,7 @@ const Item = new Schema({
   name:         {type: String, required: true},
   minBid:       {type: Number, min: 0, required: true},
   description:  String,
-  endTime:      Date,
+  endTime:      {type: Date, required: true},
   photo:        String,
   highestBid:   {itemId: Schema.Types.ObjectId, bidAmount: {type: Number, min: 0}}
 })
