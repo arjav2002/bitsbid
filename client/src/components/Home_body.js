@@ -37,7 +37,6 @@ const Body = () => {
     return (
     <>
         <br />
-        <br />
         <Carousel />
 
         <div className="container mt-5 mb-4 h3" >Items</div>              

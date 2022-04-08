@@ -123,114 +123,103 @@ class EditableItem extends React.Component {
     }
 
     render() {
-        if(!this.state.editing) {
-            return (
-                <>
-                    <div className="parent-container d-flex flex-row justify-content-center m-5">
-                        <div style={{flexGrow: 1}}>
-                            <div className="row">
-                                <div className="col mt-5">
-                                    <img src= {logo} />
-                                </div>
-                            </div>
-                        </div>
-                        <div className="ms-3 d-flex flex-column" style={{flexGrow: 2}}>
-                            <div className="row mt-4 mb-4">
-                                <div className="col">
-                                    <h2>{this.props.name}</h2>
-                                </div>
-                            </div>
-                            <div className="row mt-4 mb-4 d-flex flex-row justify-content-between">
-                                <div className="col me-5">
-                                    <h5>Current Bid: {
-                                        this.props.highestBid?
-                                        this.props.highestBid
-                                    :
-                                        <p style={{color: 'gray'}}>No bids yet.</p>
-                                    }</h5>
-                                </div>
-                                <div className= "col ms-5 me-5">
-                                    <h5 style={{whiteSpace: 'nowrap'}}>Minimum Bid: {this.props.minBid}</h5>
-                                </div>
-                            </div>
-                            <div className="row mt-4 mb-4 d-flex flex-row justify-content-between">
-                                <div className="col">
-                                    <h5>Description:</h5>
-                                    {
-                                    this.props.description?
-                                        <p><i>
-                                            {this.props.description}    
-                                        </i></p>
-                                    :
-                                        <p style={{color: 'gray'}}>No description provided.</p>}                                
-                                </div>
-                                <div className= "col ms-5 me-5">
-                                    <h5 style={{whiteSpace: 'nowrap'}}>Time remaining:</h5>
-                                    <h5 style={{whiteSpace: 'nowrap'}}>{getRemainingTimeString(this.state.timeLeft)}</h5>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="ms-3 row">
-                            <button style={{backgroundColor: '#80ced6'}} onClick={this.startEditing}><FontAwesomeIcon icon={faPenToSquare} size="3x"/></button>
-                            <button style={{backgroundColor: '#ED1C16'}} onClick={this.deleteItem}><FontAwesomeIcon icon={faTrashCan} size="3x"/></button>
+        return (
+            <div style={{width: '80%', padding: '1%', border: '10px #000000 solid'}} className="parent-container d-flex flex-row justify-content-center m-5">
+                <div style={{width: '30%'}}>
+                    <div className="row">
+                        <div className="col mt-5">
+                            <img src= {logo} />
                         </div>
                     </div>
-                </>
-            )
-        }
-        else {
-            return (
-                <>
-                    <div className="parent-container d-flex flex-row justify-content-center m-5">
-                        <div style={{flexGrow: 1}}>
-                            <div className="row">
-                                <div className="col mt-5">
-                                    <img src= {logo} />
-                                </div>
+                </div>
+                {!this.state.editing && (
+                    <>
+                    <div className="ms-3 d-flex flex-column" style={{width: '60%'}}>
+                        <div className="row mt-4 mb-4">
+                            <div className="col">
+                                <h2>{this.props.name}</h2>
                             </div>
                         </div>
-                        <div className="ms-3 d-flex flex-column" style={{flexGrow: 2}}>
-                            <div className="row mt-4 mb-4">
-                                <div className="col">
-                                    <input type="text" required={true} placeholder="Enter name" value={this.state.name} onChange={e => {this.props.name = e.target.value}}/>
-                                </div>
+                        <div className="row mt-4 mb-4 d-flex flex-row justify-content-between">
+                            <div className="col">
+                                <h5>Current Bid: {
+                                    this.props.highestBid?
+                                    this.props.highestBid
+                                :
+                                    <p style={{color: 'gray'}}>No bids yet.</p>
+                                }</h5>
                             </div>
-                            <div className="row mt-4 mb-4 d-flex flex-row justify-content-between">
-                                <div className="col me-5">
-                                    <h5>Current Bid: {
-                                        this.props.highestBid?
-                                        this.props.highestBid
-                                    :
-                                        <p style={{color: 'gray'}}>No bids yet.</p>
-                                    }</h5>
-                                </div>
-                                <div className= "col ms-5 me-5">
-                                    <h5 style={{whiteSpace: 'nowrap'}}>Minimum Bid:</h5>
-                                    <input type="number"
-                                    min={this.props.highestBid?this.props.highestBid:0}
-                                    required={true} placeholder="Enter amount in Rs." value={this.state.minBid} onChange={e => {this.setState({minBid: e.target.value})}}/>  
-                                </div>
-                            </div>
-                            <div className="row mt-4 mb-4 d-flex flex-row justify-content-between">
-                                <div className="col">
-                                    <h5>Description:</h5>
-                                    <textarea placeholder="Enter description" value={this.state.description} onChange={e => {this.setState({description: e.target.value})}} />                            
-                                </div>
-                                <div className= "col ms-5 me-5">
-                                    <h5 style={{whiteSpace: 'nowrap'}}>End Time:</h5>
-                                    <input type="time" required={true} value={get24hrTime(this.state.endTime)} onInput={this.setTimeOfDay}/>
-                                    <input type="date" required={true}  value={this.state.endTime.toISOString().substring(0, 10)} onInput={this.setDay}/>
-                                </div>
+                            <div className= "col ms-5 me-5">
+                                <h5 style={{whiteSpace: 'nowrap'}}>Minimum Bid: {this.props.minBid}</h5>
                             </div>
                         </div>
-                        <div className="ms-3 row">
-                            <button style={{backgroundColor: '#80ced6'}} onClick={this.updateItem}><FontAwesomeIcon icon={faFloppyDisk} size="3x"/></button>
-                            <button style={{backgroundColor: '#ED1C16'}} onClick={this.deleteItem}><FontAwesomeIcon icon={faTrashCan} size="3x"/></button>
+                        <div className="row mt-4 mb-4 d-flex flex-row justify-content-between">
+                            <div className="col">
+                                <h5>Description:</h5>
+                                {
+                                this.props.description?
+                                    <p><i>
+                                        {this.props.description}    
+                                    </i></p>
+                                :
+                                    <p style={{color: 'gray'}}>No description provided.</p>}                                
+                            </div>
+                            <div className= "col ms-5 me-5">
+                                <h5 style={{whiteSpace: 'nowrap'}}>Time remaining:</h5>
+                                <h5 style={{whiteSpace: 'nowrap'}}>{getRemainingTimeString(this.state.timeLeft)}</h5>
+                            </div>
                         </div>
                     </div>
-                </>
-            )
-        }
+                    <div className="ms-3 row" style={{width: "10%"}}>
+                        <button style={{backgroundColor: '#80ced6'}} onClick={this.startEditing}><FontAwesomeIcon icon={faPenToSquare} size="3x"/></button>
+                        <button style={{backgroundColor: '#ED1C16'}} onClick={this.deleteItem}><FontAwesomeIcon icon={faTrashCan} size="3x"/></button>
+                    </div>
+                    </>
+                )}
+                {this.state.editing && (
+                    <>
+                    <div className="ms-3 d-flex flex-column" style={{width: '60%'}}>
+                        <div className="row mt-4 mb-4">
+                            <div className="col">
+                                <input type="text" required={true} placeholder="Enter name" value={this.state.name} onInput={e => {this.setState({name: e.target.value})}}/>
+                            </div>
+                        </div>
+                        <div className="row mt-4 mb-4 d-flex flex-row justify-content-between">
+                            <div className="col">
+                                <h5>Current Bid: {
+                                    this.props.highestBid?
+                                    this.props.highestBid
+                                :
+                                    <p style={{color: 'gray'}}>No bids yet.</p>
+                                }</h5>
+                            </div>
+                            <div className= "col ms-5 me-5">
+                                <h5 style={{whiteSpace: 'nowrap'}}>Minimum Bid:</h5>
+                                <input type="number"
+                                min={this.props.highestBid?this.props.highestBid:0}
+                                required={true} placeholder="Enter amount in Rs." value={this.state.minBid} onChange={e => {this.setState({minBid: e.target.value})}}/>  
+                            </div>
+                        </div>
+                        <div className="row mt-4 mb-4 d-flex flex-row justify-content-between">
+                            <div className="col">
+                                <h5>Description:</h5>
+                                <textarea placeholder="Enter description" value={this.state.description} onChange={e => {this.setState({description: e.target.value})}} />                            
+                            </div>
+                            <div className= "col ms-5 me-5">
+                                <h5 style={{whiteSpace: 'nowrap'}}>End Time:</h5>
+                                <input type="time" required={true} value={get24hrTime(this.state.endTime)} onInput={this.setTimeOfDay}/>
+                                <input type="date" required={true}  value={this.state.endTime.toISOString().substring(0, 10)} onInput={this.setDay}/>
+                            </div>
+                        </div>
+                    </div>
+                    <div style={{width: '10%'}} className="ms-3 row">
+                        <button style={{backgroundColor: '#80ced6'}} onClick={this.updateItem}><FontAwesomeIcon icon={faFloppyDisk} size="3x"/></button>
+                        <button style={{backgroundColor: '#ED1C16'}} onClick={this.deleteItem}><FontAwesomeIcon icon={faTrashCan} size="3x"/></button>
+                    </div>
+                    </>
+                )}
+            </div>
+        )
     }
 }
 
