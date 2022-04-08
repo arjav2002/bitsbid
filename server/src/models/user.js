@@ -7,7 +7,8 @@ const User = new Schema({
   picture:    String,
   bids:       [{itemId: Schema.Types.ObjectId, bidAmount: {type: Number, min: 0}}],
   watchlist:  [Schema.Types.ObjectId],
-  items:      [Schema.Types.ObjectId]
+  items:      [Schema.Types.ObjectId],
+  soldItems:  [Schema.Types.ObjectId]
 })
 
 module.exports = mongoose.model('User', User)

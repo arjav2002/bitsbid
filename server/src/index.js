@@ -87,7 +87,6 @@ app.delete('/item', checkAuthenticate, checkSeller, async(req, res) => {
 app.post('/item', checkAuthenticate, checkSeller, async(req, res)=> {
     let item;
     if(!req.query) res.status(400).send("Invalid query.")
-
     if(!req.query.id) {
         item = await Item.create({ 
                         sellerId: req.user.email,
@@ -100,15 +99,15 @@ app.post('/item', checkAuthenticate, checkSeller, async(req, res)=> {
     }
     else {
         item = await Item.findOneAndUpdate({_id: req.item.id}, {
-            name: req.query.name,
-            description: req.query.description,
-            endTime: req.query.endTime,
-            photo: req.query.photo,
-            minBid: req.query.minBid
+            name: req.body.name,
+            description: req.body.description,
+            endTime: req.body.endTime,
+            photo: req.body.photo,
+            minBid: req.body.minBid
         }, {new: true})
     }
 
-    await User.findOneAndUpdate({email: req.user.email}, {$push: {items: item.id}})
+    await User.findOneAndUpdate({email: req.user.email}, {$addToSet: {items: item.id}})
     res.status(200).send(item.id);
 })
 
@@ -151,10 +150,9 @@ app.post('/bidItem', checkAuthenticate, async(req, res)=> {
     }
 })
 
-app.get('/fetchItems',checkAuthenticate, async(req,res) =>{
-
+app.get('/myitems',checkAuthenticate, async(req,res) =>{
     try {
-        obj = await User.findById(req.query.id);
+        obj = await User.findById(req.user.id);
     } catch(err) {
         return res.status(500).send("Internal sever error occurred")
     }
@@ -162,9 +160,6 @@ app.get('/fetchItems',checkAuthenticate, async(req,res) =>{
     if(!obj) return res.status(404).send("No user with given ID exists..");
 
     itemList = obj.items;
-    // for (let i = 0; i < itemList.length; i++) {
-    //     console.log(itemList[i]);
-    // }
     return res.send(itemList);
 })
 
@@ -211,7 +206,6 @@ async function checkAuthenticate(req,res,next){
 }
 
 const PAGE_SIZE = 9
-
 app.get("/itemspage", checkAuthenticate, async(req, res) => {
     const pgno = Number(req.query.pgno)
     if(!Number.isInteger(pgno) || pgno <= 0) {
