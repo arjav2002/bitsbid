@@ -55,9 +55,9 @@ const Body = () => {
                 <div className="row">
                     {itemsData.items.map(item => (
                         <div className="col-4 mb-5 d-flex justify-content-center">
-                            <Link to={'/item'} className="text-decoration-none">
+                            <Link to={`/item/${item._id}`} className="text-decoration-none">
                                 <Card
-                                    key = {item.sellerId}
+                                    key = {item._id}
                                     name = {item.name}
                                     image = {item.photo}
                                 />

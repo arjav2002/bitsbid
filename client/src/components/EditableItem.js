@@ -5,45 +5,9 @@ import axios from 'axios'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPenToSquare, faTrashCan, faFloppyDisk } from '@fortawesome/free-solid-svg-icons'
 
+import { get24hrTime, TimeCounter } from './utils'
+
 const {REACT_APP_SERVER_IP, REACT_APP_PORT} = process.env
-
-const WEEK = 1000*3600*24*7
-const DAY = WEEK/7;
-const HOUR = DAY/24;
-const MIN = HOUR/60;
-const SEC = MIN/60;
-
-function get24hrTime(date) {
-    const h = date.getHours()
-    const m = date.getMinutes()
-    return (h<10?"0":"") + h + ":" + (m<10?"0":"") + m
-}
-
-function getRemainingTimeString(timeLeft) {
-    let ms = timeLeft
-    const week = Math.floor(ms/WEEK)
-    ms -= week*WEEK
-    const day = Math.floor(ms/DAY)
-    ms -= day*DAY
-    const hr = Math.floor(ms/HOUR)
-    ms -= hr*HOUR
-    const min = Math.floor(ms/MIN)
-    ms -= min*MIN
-    const s = Math.floor(ms/SEC)
-
-    const weekStr = " week" + (week>1?"s":"")
-    const dayStr = " day" + (day>1?"s":"")
-    const hourStr = " hour" + (hr>1?"s":"")
-    const minStr = " minute" + (min>1?"s":"")
-    const secStr = " second" + (s>1?"s":"")
-    
-    if(week) return (week?(week + weekStr):"") + (day?(", " + day + dayStr):"") + (hr?(", " + hr + hourStr):"")
-    if(day) return (day?(day + dayStr):"") + (hr?(", " + hr + hourStr):"") + (min?(", " + min + minStr):"")
-    if(hr) return (hr?(hr + hourStr):"") + (min?(", " + min + minStr):"") + (s?(", " + s + secStr):"")
-    if(min) return (min?(min + minStr):"") + (s?(", " + s + secStr):"")
-
-    return s + secStr
-}
 
 class EditableItem extends React.Component {
 
@@ -55,14 +19,6 @@ class EditableItem extends React.Component {
         this.startEditing = this.startEditing.bind(this)
         this.setTimeOfDay = this.setTimeOfDay.bind(this)
         this.setDay = this.setDay.bind(this)
-    }
-
-    componentDidMount() {
-        this.interval = setInterval(() => this.setState({ timeLeft: this.state.timeLeft-1000 }), 1000);
-    }
-
-    componentWillUnmount() {
-        clearInterval(this.interval);
     }
 
     deleteItem() {
@@ -166,7 +122,7 @@ class EditableItem extends React.Component {
                             </div>
                             <div className= "col ms-5 me-5">
                                 <h5 style={{whiteSpace: 'nowrap'}}>Time remaining:</h5>
-                                <h5 style={{whiteSpace: 'nowrap'}}>{getRemainingTimeString(this.state.timeLeft)}</h5>
+                                <h5 style={{whiteSpace: 'nowrap'}}><TimeCounter timeLeft={this.state.timeLeft}/></h5>
                             </div>
                         </div>
                     </div>

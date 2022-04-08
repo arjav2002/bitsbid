@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import axios from 'axios'
 
 import EditableItem from './EditableItem'
+
+import { Link } from 'react-router-dom'
 
 const {REACT_APP_SERVER_IP, REACT_APP_PORT} = process.env
 
@@ -46,8 +48,12 @@ class Body extends React.Component {
                 </div>
                 <div className="d-flex flex-column align-items-center">
                     {this.state.loaded && this.state.items.map(item => {
-                        return (<EditableItem onDelete={id => this.deleteItem(id)} itemid={item._id} photo={item.photo} minBid={item.minBid} name={item.name} description={item.description} endTime={item.endTime} highestBid={item.highestBid}/>)}
-                    )}
+                        return (
+                        <Link className="d-flex flex-row justify-content-center" to={`/item/${item._id}`} style={{ width: '100%', height: '100%', color: 'inherit', textDecoration: 'inherit' }}>
+                            <EditableItem onDelete={id => this.deleteItem(id)} itemid={item._id} photo={item.photo} minBid={item.minBid} name={item.name} description={item.description} endTime={item.endTime} highestBid={item.highestBid}/>
+                        </Link>
+                        )
+                    })}
                     {!this.state.loaded && <div className="ms-5"><h1>Loading...</h1></div>}
                 </div>
             </div>
