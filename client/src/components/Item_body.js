@@ -10,6 +10,8 @@ const Item_body = ({itemid}) => {
     const [ loaded, setLoaded ] = useState(false)
     const [ itemObj, setItemObj ] = useState(null)
     const [ timeLeft, setTimeLeft ] = useState(0)
+    const [ bidAmount, setBidAmount ] = useState(0)
+    const [ errorMessage, setErrorMessage ] = useState("")
 
     useEffect(() => {
         const fetchUrl = 'http://' + REACT_APP_SERVER_IP + ':' + REACT_APP_PORT + `/item?id=${itemid}`
@@ -21,6 +23,29 @@ const Item_body = ({itemid}) => {
         })
         .catch(err => console.log(err))
     }, [])
+
+    function submitBid() {
+        const minReqBid = itemObj.highestBid?itemObj.highestBid:itemObj.minBid
+        if(bidAmount < minReqBid) {
+            setErrorMessage("Submitted bid cannot be lesser than minimum bid.")
+            return
+        }
+
+        if(bidAmount == minReqBid) {
+            setErrorMessage("Submitted bid cannot be equal to minimum bid.")
+            return
+        }
+
+        const postBidUrl = 'http://' + REACT_APP_SERVER_IP + ':' + REACT_APP_PORT + '/bidItem'
+        axios.post(postBidUrl, null, {params: {
+            id: itemid,
+            bid: bidAmount
+        }})
+        .then(res => {
+            window.location.reload();
+        })
+        .catch(err => console.log(err))
+    }
 
   return (
     <div>
@@ -48,6 +73,9 @@ const Item_body = ({itemid}) => {
                             {itemObj.description}
                         </i></p>
                     </div>
+                    <div className="col">
+                        Minimum Bid: {itemObj.minBid}
+                    </div>
                 </div>
                 <div className="row mt-4 mb-4">
                     <div className="col">
@@ -59,14 +87,17 @@ const Item_body = ({itemid}) => {
                 </div>
                 <div className="row mt-4">
                     <div className="col-3">
-                        <input className="form-control me-2" placeholder="Enter bid amount" type="number" aria-label="Search"/>
+                        <input className="form-control me-2" onInput={e => setBidAmount(e.target.value)} placeholder="Enter bid amount" type="number" aria-label="Search"/>
                     </div>
                     <div className="col">
-                        <button className="btn btn-danger ms-2" type="submit">BID</button>
+                        <button className="btn btn-danger ms-2" onClick={submitBid}>BID</button>
                     </div>
                     <div className="col">
                         <button className="btn rounded-pill btn-dark me-2 text-nowrap" type="submit">Add to Watchlist</button>
                     </div>
+                </div>
+                <div className="row mt-1">
+                    <div style={{color: 'red'}} className="col">{errorMessage}</div>
                 </div>
             </div>
         </div>
