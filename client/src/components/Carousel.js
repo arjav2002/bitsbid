@@ -4,7 +4,7 @@ import caro from "../img/carousel_img.jpg"
 
 const Carousel = () => {
   return (
-    <div id="carouselExampleControls" className="carousel slide bg-dark mt-3 me-5 ms-5" data-bs-ride="carousel">
+    <div id="carouselExampleControls" className="carousel slide bg-dark mt-5 me-5 ms-5" data-bs-ride="carousel">
         <div className="carousel-inner">
             <div className="carousel-item active">
             <img src={logo} className="d-block w-50" alt="..." style={{margin:'auto'}}/>
