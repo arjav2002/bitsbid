@@ -1,11 +1,12 @@
-import React from 'react'
+import {React, useState} from 'react'
 import logo from '../img/logo_fin.png'
 import { Link } from 'react-router-dom'
 
 const Navbar = () => {
 
   return (
-    <nav className="navbar navbar-light bg-light">
+    <>
+    <nav className={"navbar navbar-light fixed-top bg-light"} >
     <div className="container-fluid">
         <Link to={'/home'}>
           <a className="navbar-brand"><img src={logo} width='120' height='50' alt="logo here"/></a>
@@ -17,6 +18,7 @@ const Navbar = () => {
             <button className="btn rounded-pill btn-danger ms-3 me-3" type="submit">SELL</button>
           </Link>
         </form>
+        
         <Link to={'/my-items'}>
           <button className="btn">
             <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" className="bi bi-person-circle" viewBox="0 0 16 16">
@@ -27,6 +29,7 @@ const Navbar = () => {
         </Link>
     </div>
     </nav>
+    </>
   )
 }
 

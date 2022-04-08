@@ -1,13 +1,22 @@
 import axios from "axios"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
-import FormData from 'form-data'
 import "./Sell.css"
 const {REACT_APP_SERVER_IP, REACT_APP_PORT} = process.env
 
-const Sell = (props) => {
+const Sell = () => {
 
   const navigate = useNavigate()
+  
+  let today = new Date()
+  let d = today.getDate()
+  let m = today.getMonth() + 1
+  let y = today.getFullYear()
+
+  if(d < 10) d = '0' + d
+  if(m < 10) m = '0' + m;
+  
+  today = y + '-' + m + '-' + d;
 
   const [title, setTitle] = useState("")
   const [endDate, setEndDate] = useState("")
@@ -68,7 +77,7 @@ const Sell = (props) => {
         <div className="col-md-2 text-center">Title</div>
           <div className="col-md-4 text-center">
             <div className="form-group">
-              <input type="text" className="form-control" required={true} placeholder="Enter title"value={title} onChange={handleTitle}/>
+              <input type="text" className="form-control" required={true} placeholder="Enter title" value={title} onChange={handleTitle}/>
             </div>
           </div>
         </div>
@@ -77,7 +86,7 @@ const Sell = (props) => {
         <div className="col-md-2 text-center">End Date</div>
           <div className="col-md-4 text-center">
             <div className="form-group">
-              <input type="date" className="form-control" required={true}  value={endDate} onChange={handleEndDate}/>
+              <input type="date" className="form-control" required={true} min={today} value={endDate} onChange={handleEndDate}/>
             </div>
           </div>
         </div>
@@ -117,7 +126,7 @@ const Sell = (props) => {
         <div className="col-md-2 text-center">Image</div>
           <div className="col-md-4 text-start">
             <div className="form-group">
-              <input type="file" className="form-control-file" accept="image/*" value={image} onChange={handleImage}/>
+              <input type="file" className="form-control-file" accept=".png, .jpg, .jpeg" value={image} onChange={handleImage}/>
             </div>
           </div>
         </div>
