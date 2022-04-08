@@ -36,7 +36,6 @@ const Sell = (props) => {
     date.setFullYear(y, m-1, d)
     date.setHours(h)
     date.setMinutes(s)
-    console.log(date)
 
     const server_url = 'http://' + REACT_APP_SERVER_IP + ':' + REACT_APP_PORT + '/item';
     axios.post(server_url, {

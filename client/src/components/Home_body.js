@@ -12,7 +12,6 @@ const Body = () => {
     const [itemsData, setItemsData] = useState({totalPages: 0, items: []})
 
     useEffect(async() => {
-        console.log("called")
         setLoading(true)
         const fetchUrl = "http://" + REACT_APP_SERVER_IP + ":" + REACT_APP_PORT + `/itemspage?pgno=${currentPage}`
         const res = await axios.get(fetchUrl)
