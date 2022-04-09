@@ -1,5 +1,6 @@
 require('dotenv').config()
 
+const Pusher = require("pusher");
 const cookieParser = require('cookie-parser');
 const cors = require('cors')
 const express = require('express')
@@ -26,6 +27,14 @@ mongoose.connect(dbURL, { useNewUrlParser: true, useUnifiedTopology: true })
 const {OAuth2Client} = require('google-auth-library');
 CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
 const client = new OAuth2Client(CLIENT_ID);
+
+const pusher = new Pusher({
+    appId: process.env.PUSHER_APPID,
+    key: process.env.PUSHER_KEY,
+    secret: process.env.PUSHER_SECRET,
+    cluster: process.env.PUSHER_CLUSTER,
+    useTLS: true
+  });
 
 app.use(cookieParser());
 app.use(express.static(path.join("client", "build")));
@@ -111,6 +120,10 @@ app.post('/item', checkAuthenticate, checkSeller, async(req, res)=> {
     res.status(200).send(item.id);
 })
 
+app.get('/watchlist', checkAuthenticate, async(req, res) => {
+    return res.send(req.user.watchlist)
+})
+
 app.post('/watchlist', checkAuthenticate, async(req, res)=> {
     try {
         obj = await Item.findById(req.query.id);
@@ -141,6 +154,11 @@ app.post('/bidItem', checkAuthenticate, async(req, res)=> {
         item = await Item.findOneAndUpdate({_id: obj.id}, {
             highestBid: req.query.bid
         }, {new: true})
+
+        pusher.trigger('item-bid', 'my-event', {
+            bidAmount: req.query.bid,
+            id: item._id
+        })
 
         await User.findOneAndUpdate({email: req.user.email}, {$push: {bids: {itemID : item.id, bidAmount:req.query.bid}}})
         return res.status(200).send('bid added to user bids');

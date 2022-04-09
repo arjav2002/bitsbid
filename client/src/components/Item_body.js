@@ -47,6 +47,15 @@ const Item_body = ({itemid}) => {
         .catch(err => console.log(err))
     }
 
+    function addToWatchlist() {
+        const postItemUrl = 'http://' + REACT_APP_SERVER_IP + ':' + REACT_APP_PORT + '/watchlist'
+        axios.post(postItemUrl, null, {params: {id: itemid}})
+        .then(
+            setErrorMessage("Item added to watchlist.")
+        )
+        .catch(err => console.log(err))
+    }
+
   return (
     <div>
         {!loaded && <div className="m-5"><br/><br/><h1>Loading...</h1></div>}
@@ -93,7 +102,7 @@ const Item_body = ({itemid}) => {
                         <button className="btn btn-danger ms-2" onClick={submitBid}>BID</button>
                     </div>
                     <div className="col">
-                        <button className="btn rounded-pill btn-dark me-2 text-nowrap" type="submit">Add to Watchlist</button>
+                        <button className="btn rounded-pill btn-dark me-2 text-nowrap" onClick={addToWatchlist}>Add to Watchlist</button>
                     </div>
                 </div>
                 <div className="row mt-1">

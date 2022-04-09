@@ -19,6 +19,7 @@
   },
   "homepage": "https://github.com/arjav2002/bitsbid#readme",
   "dependencies": {
+    "@pusher/push-notifications-server": "^1.2.5",
     "body-parser": "^1.19.2",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
@@ -28,6 +29,8 @@
     "google-auth-library": "^7.14.0",
     "mongoose": "^6.2.4",
     "node": "^17.5.0",
-    "nodemon": "^2.0.15"
+    "nodemon": "^2.0.15",
+    "pusher": "^5.0.1",
+    "pusher-js": "^7.0.6"
   }
 }

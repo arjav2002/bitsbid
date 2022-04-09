@@ -5,6 +5,8 @@ import axios from 'axios'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPenToSquare, faTrashCan, faFloppyDisk } from '@fortawesome/free-solid-svg-icons'
 
+import { Link } from 'react-router-dom'
+
 import { get24hrTime, TimeCounter } from './utils'
 
 const {REACT_APP_SERVER_IP, REACT_APP_PORT} = process.env
@@ -81,7 +83,7 @@ class EditableItem extends React.Component {
     render() {
         return (
             <div style={{width: '80%', padding: '1%', border: '10px #000000 solid'}} className="parent-container d-flex flex-row justify-content-center m-5">
-                <div style={{width: '30%'}}>
+                <div style={{width: '20%'}}>
                     <div className="row">
                         <div className="col mt-5">
                             <img src= {logo} />
@@ -89,7 +91,8 @@ class EditableItem extends React.Component {
                     </div>
                 </div>
                 {!this.state.editing && (
-                    <>
+                    <div className="d-flex flex-row" style={{width: '80%'}}>
+                    <Link className="d-flex flex-row justify-content-center" to={`/item/${this.props.itemid}`} style={{ width: '90%', color: 'inherit', textDecoration: 'inherit' }}>
                     <div className="ms-3 d-flex flex-column" style={{width: '60%'}}>
                         <div className="row mt-4 mb-4">
                             <div className="col">
@@ -126,15 +129,16 @@ class EditableItem extends React.Component {
                             </div>
                         </div>
                     </div>
+                    </Link>
                     <div className="ms-3 row" style={{width: "10%"}}>
                         <button style={{backgroundColor: '#80ced6'}} onClick={this.startEditing}><FontAwesomeIcon icon={faPenToSquare} size="3x"/></button>
                         <button style={{backgroundColor: '#ED1C16'}} onClick={this.deleteItem}><FontAwesomeIcon icon={faTrashCan} size="3x"/></button>
                     </div>
-                    </>
+                    </div>
                 )}
                 {this.state.editing && (
-                    <>
-                    <div className="ms-3 d-flex flex-column" style={{width: '60%'}}>
+                    <div className="ms-5 d-flex flex-row" style={{width: '80%'}}>
+                    <div className="ms-5 d-flex flex-column" style={{width: '90%'}}>
                         <div className="row mt-4 mb-4">
                             <div className="col">
                                 <input type="text" required={true} placeholder="Enter name" value={this.state.name} onInput={e => {this.setState({name: e.target.value})}}/>
@@ -172,7 +176,7 @@ class EditableItem extends React.Component {
                         <button style={{backgroundColor: '#80ced6'}} onClick={this.updateItem}><FontAwesomeIcon icon={faFloppyDisk} size="3x"/></button>
                         <button style={{backgroundColor: '#ED1C16'}} onClick={this.deleteItem}><FontAwesomeIcon icon={faTrashCan} size="3x"/></button>
                     </div>
-                    </>
+                    </div>
                 )}
             </div>
         )

@@ -49,10 +49,7 @@ class Body extends React.Component {
                 <div className="d-flex flex-column align-items-center">
                     {this.state.loaded && this.state.items.map(item => {
                         return (
-                        <Link className="d-flex flex-row justify-content-center" to={`/item/${item._id}`} style={{ width: '100%', height: '100%', color: 'inherit', textDecoration: 'inherit' }}>
-                            <EditableItem onDelete={id => this.deleteItem(id)} itemid={item._id} photo={item.photo} minBid={item.minBid} name={item.name} description={item.description} endTime={item.endTime} highestBid={item.highestBid}/>
-                        </Link>
-                        )
+                        <EditableItem onDelete={id => this.deleteItem(id)} itemid={item._id} photo={item.photo} minBid={item.minBid} name={item.name} description={item.description} endTime={item.endTime} highestBid={item.highestBid}/>                        )
                     })}
                     {!this.state.loaded && <div className="ms-5"><h1>Loading...</h1></div>}
                 </div>
