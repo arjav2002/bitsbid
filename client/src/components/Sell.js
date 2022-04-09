@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom"
 import "./Sell.css"
 const {REACT_APP_SERVER_IP, REACT_APP_PORT} = process.env
 
+const image = ""
+
 const Sell = () => {
 
   const navigate = useNavigate()
@@ -25,12 +27,33 @@ const Sell = () => {
   const [desc, setDesc] = useState("")
   const [image, setImage] = useState("")
 
+  let uploadStarted = false
+  let uploadComplete = false
+
   const handleTitle = e => setTitle(e.target.value)
   const handleEndDate = e => setEndDate(e.target.value)
   const handleEndTime = e => setEndTime(e.target.value)
   const handleMinBid = e => setMinBid(e.target.value)
   const handleDesc = e => setDesc(e.target.value)
-  const handleImage = e => setImage(e.target.value)
+  const handleImage = (e) => {   
+
+    uploadStarted = true
+    uploadComplete = false
+    
+    var reader = new FileReader();
+    let base64str = ""
+    reader.readAsDataURL(e.target.files[0]);
+    reader.onload = function () {
+      base64str = reader.result
+      setImage(base64str)
+      uploadStarted = false
+      uploadComplete = true
+    };
+    reader.onerror = function (error) {
+      console.log('Error: ', error);
+    };
+    
+  }
 
   const handleSubmit = (e) => {
 
@@ -42,23 +65,29 @@ const Sell = () => {
     const y = parseInt(endDate.substring(0, 4))
     const h = parseInt(endTime.substring(0, 2))
     const s = parseInt(endTime.substring(3))
-    date.setFullYear(y, m-1, d)
+    date.setFullYear(y, m-1, d)    
+
     date.setHours(h)
     date.setMinutes(s)
 
-    const server_url = 'http://' + REACT_APP_SERVER_IP + ':' + REACT_APP_PORT + '/item';
-    axios.post(server_url, {
-      name: title,
-      endTime: date,
-      minBid: parseInt(minBid),
-      description: desc,
-      photo: image
-    })
-    .then(res => navigate(-1))
-    .catch(err => {
-      console.log(err)
-      navigate(-1)
-    })
+    if(uploadComplete == true || uploadStarted == false){
+      const server_url = 'http://' + REACT_APP_SERVER_IP + ':' + REACT_APP_PORT + '/item';
+      axios.post(server_url, {
+        name: title,
+        endTime: date,
+        minBid: parseInt(minBid),
+        description: desc,
+        photo: image
+      })
+      .then(res => navigate(-1))
+      .catch(err => {
+        console.log(err)
+        navigate(-1)
+      })
+    }
+    else if(uploadStarted == true && uploadComplete == false){
+      alert("The image is still being uploaded")
+    }
   }
 
   return (
@@ -126,7 +155,7 @@ const Sell = () => {
         <div className="col-md-2 text-center">Image</div>
           <div className="col-md-4 text-start">
             <div className="form-group">
-              <input type="file" className="form-control-file" accept=".png, .jpg, .jpeg" value={image} onChange={handleImage}/>
+              <input type="file" className="form-control-file" accept=".png, .jpg, .jpeg" onChange={handleImage}/>
             </div>
           </div>
         </div>
