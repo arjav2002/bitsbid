@@ -19,7 +19,6 @@
   },
   "homepage": "https://github.com/arjav2002/bitsbid#readme",
   "dependencies": {
-    "@pusher/push-notifications-server": "^1.2.5",
     "body-parser": "^1.19.2",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
