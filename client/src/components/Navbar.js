@@ -16,6 +16,9 @@ const Navbar = () => {
     })
     .catch(err => console.log(err))
   }
+  const [searchStr, setSearchStr] = useState("")
+  const handleSearch = e => setSearchStr(e.target.value)
+
   return (
     <>
     <nav className={"navbar navbar-light fixed-top bg-light"} >
@@ -25,9 +28,14 @@ const Navbar = () => {
         </Link>
         
         <form className="d-flex">
-          <input className="form-control me-3" type="search" placeholder="Search" aria-label="Search" />
+
+          <input className="form-control me-3" type="search" value={searchStr} onChange={handleSearch} placeholder="Search" aria-label="Search" />
+          <Link to={`/search/${searchStr}`}>
+            <button className="btn rounded-pill btn-danger ms-3 me-5">Search</button>
+          </Link>
+
           <Link to={'/sell'}>
-            <button className="btn rounded-pill btn-danger ms-3 me-3" type="submit">SELL</button>
+            <button className="btn rounded-pill btn-success ms-5" type="submit">SELL</button>
           </Link>
         </form>
         
