@@ -54,7 +54,6 @@ const Body = () => {
             { !loading && (
                 <div className="row">
                     {itemsData.items.map(item => {
-                        newImage.src = item.photo
                         return (
                             <div className="col-4 mb-5 d-flex justify-content-center">
                                 <Link to={`/item/${item._id}`} className="text-decoration-none">
