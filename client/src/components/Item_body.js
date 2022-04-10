@@ -25,7 +25,7 @@ const Item_body = ({itemid}) => {
     }, [])
 
     function submitBid() {
-        const minReqBid = itemObj.highestBid?itemObj.highestBid:itemObj.minBid
+        const minReqBid = parseInt(itemObj.highestBid?itemObj.highestBid:itemObj.minBid)
         if(bidAmount < minReqBid) {
             setErrorMessage("Submitted bid cannot be lesser than minimum bid.")
             return
@@ -96,7 +96,7 @@ const Item_body = ({itemid}) => {
                 </div>
                 <div className="row mt-4">
                     <div className="col-3">
-                        <input className="form-control me-2" onInput={e => setBidAmount(e.target.value)} placeholder="Enter bid amount" type="number" aria-label="Search"/>
+                        <input className="form-control me-2" onInput={e => setBidAmount(parseInt(e.target.value))} placeholder="Enter bid amount" type="number" aria-label="Search"/>
                     </div>
                     <div className="col">
                         <button className="btn btn-danger ms-2" onClick={submitBid}>BID</button>
