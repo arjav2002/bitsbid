@@ -1,5 +1,8 @@
 import React from 'react'
 
+const {REACT_APP_SERVER_IP, REACT_APP_PORT} = process.env
+export const SERVER_URL = 'http://' + REACT_APP_SERVER_IP + ':' + REACT_APP_PORT
+
 const WEEK = 1000*3600*24*7
 const DAY = WEEK/7;
 const HOUR = DAY/24;
@@ -56,3 +59,4 @@ export class TimeCounter extends React.Component {
         return (<>{getRemainingTimeString(this.state.timeLeft)}</>)
     }
 }
+
