@@ -1,8 +1,5 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import axios from 'axios'
-
-import React from 'react'
-
 import * as PusherPushNotifications from '@pusher/push-notifications-web'
 import Pusher from 'pusher-js'
 import Navbar from './Navbar'
@@ -72,6 +69,7 @@ class Watchlist extends React.Component {
                                 name = {item.name}
                                 endTime = {item.endTime}
                                 currentBid = {item.highestBid}
+                                image = {item.photo}
                             />
                             </div>
                             // <l1> {item.name} is selling for {item.highestBid} </l1>

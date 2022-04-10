@@ -62,7 +62,7 @@ const Body = () => {
                                         name = {item.name}
                                         time = {new Date(item.endTime) - Date.now()}
                                         currBid = {item.highestBid ? item.highestBid : "No bids yet"}
-                                        newImage = {item.photo}
+                                        image = {item.photo}
                                     />
                                 </Link>
                             </div>
