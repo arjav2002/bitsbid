@@ -4,18 +4,26 @@ import { Link } from 'react-router-dom'
 
 const Navbar = () => {
 
+  const [searchStr, setSearchStr] = useState("")
+  const handleSearch = e => setSearchStr(e.target.value)
+
   return (
     <>
     <nav className={"navbar navbar-light fixed-top bg-light"} >
-    <div className="container-fluid">
+      <div className="container-fluid">
         <Link to={'/home'}>
           <a className="navbar-brand"><img src={logo} width='120' height='50' alt="logo here"/></a>
         </Link>
         
         <form className="d-flex">
-          <input className="form-control me-3" type="search" placeholder="Search" aria-label="Search" />
+
+          <input className="form-control me-3" type="search" value={searchStr} onChange={handleSearch} placeholder="Search" aria-label="Search" />
+          <Link to={`/search/${searchStr}`}>
+            <button className="btn rounded-pill btn-danger ms-3 me-5">Search</button>
+          </Link>
+
           <Link to={'/sell'}>
-            <button className="btn rounded-pill btn-danger ms-3 me-3" type="submit">SELL</button>
+            <button className="btn rounded-pill btn-success ms-5" type="submit">SELL</button>
           </Link>
         </form>
         
