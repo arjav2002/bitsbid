@@ -180,7 +180,7 @@ app.get('/myitems',checkAuthenticate, async(req,res) =>{
 
 app.get('/signout',(req,res)=>{
     res.clearCookie('session-token');
-    res.redirect('/login')
+    return res.send('/')
 })
 
 async function checkSeller(req, res, next) {

@@ -82,14 +82,15 @@ class EditableItem extends React.Component {
 
     render() {
         return (
-            <div style={{width: '80%', padding: '1%', border: '10px #000000 solid'}} className="parent-container d-flex flex-row justify-content-center m-5">
+            <div style={{width: '80%', padding:0}} className="card parent-container d-flex flex-row justify-content-center m-5">
                 <div style={{width: '20%'}}>
                     <div className="row">
                         <div className="col mt-5">
-                            <img src= {logo} />
+                            <img src= {logo} className="card-img-top" />
                         </div>
                     </div>
                 </div>
+                <div className="card-body" style={{padding:0}}>
                 {!this.state.editing && (
                     <div className="d-flex flex-row" style={{width: '80%'}}>
                     <Link className="d-flex flex-row justify-content-center" to={`/item/${this.props.itemid}`} style={{ width: '90%', color: 'inherit', textDecoration: 'inherit' }}>
@@ -130,7 +131,7 @@ class EditableItem extends React.Component {
                         </div>
                     </div>
                     </Link>
-                    <div className="ms-3 row" style={{width: "10%"}}>
+                    <div className="ms-3 row flex-grow-1" style={{width: "10%"}}>
                         <button style={{backgroundColor: '#80ced6'}} onClick={this.startEditing}><FontAwesomeIcon icon={faPenToSquare} size="3x"/></button>
                         <button style={{backgroundColor: '#ED1C16'}} onClick={this.deleteItem}><FontAwesomeIcon icon={faTrashCan} size="3x"/></button>
                     </div>
@@ -178,6 +179,7 @@ class EditableItem extends React.Component {
                     </div>
                     </div>
                 )}
+                </div>
             </div>
         )
     }
