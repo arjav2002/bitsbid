@@ -1,5 +1,5 @@
 import React from 'react'
-import logo from "../img/logo_fin.png"
+import logo from '../img/showcase.jpg'
 import axios from 'axios'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -89,7 +89,7 @@ class EditableItem extends React.Component {
                 <div style={{width: '20%'}}>
                     <div className="row">
                         <div className="col mt-5">
-                            <img src= {logo} className="card-img-top" />
+                            <img id="imageContainer" src={this.props.photo ? this.props.photo : logo} className="card-img-top" alt="..." />
                         </div>
                     </div>
                 </div>

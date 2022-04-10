@@ -2,7 +2,6 @@ import React from 'react'
 import axios from 'axios'
 
 import EditableItem from './EditableItem'
-
 import { Link } from 'react-router-dom'
 
 const {REACT_APP_SERVER_IP, REACT_APP_PORT} = process.env
