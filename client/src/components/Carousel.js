@@ -4,7 +4,7 @@ import caro from "../img/carousel_img.jpg"
 
 const Carousel = () => {
   return (
-    <div id="carouselExampleControls" className="carousel slide bg-dark mt-5 me-5 ms-5" data-bs-ride="carousel">
+    <div id="carouselExampleControls" style={{border:'5px black solid', padding:'10px'}} className="carousel slide mt-5 me-5 ms-5" data-bs-ride="carousel">
         <div className="carousel-inner">
             <div className="carousel-item active">
             <img src={logo} className="d-block w-50" alt="..." style={{margin:'auto'}}/>
@@ -14,11 +14,11 @@ const Carousel = () => {
             </div>
         </div>
         <button className="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-            <span className="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span className="carousel-control-prev-icon" style={{filter:'invert(100%)'}} aria-hidden="true"></span>
             <span className="visually-hidden">Previous</span>
         </button>
         <button className="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
-            <span className="carousel-control-next-icon" aria-hidden="true"></span>
+            <span className="carousel-control-next-icon" style={{filter:'invert(100%)'}} aria-hidden="true"></span>
             <span className="visually-hidden">Next</span>
         </button>
     </div>

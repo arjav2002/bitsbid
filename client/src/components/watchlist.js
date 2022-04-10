@@ -5,6 +5,9 @@ import React from 'react'
 
 import * as PusherPushNotifications from '@pusher/push-notifications-web'
 import Pusher from 'pusher-js'
+import Navbar from './Navbar'
+import Footer from './Footer'
+import Watchlist_card from './Watchlist_card'
 
 const { REACT_APP_SERVER_IP, REACT_APP_PORT, REACT_APP_PUSHER_CLUSTER, REACT_APP_PUSHER_KEY } = process.env
 
@@ -54,14 +57,29 @@ class Watchlist extends React.Component {
     render() {
         return (
             <>
-            <h1>Watchlist: </h1>
-            {!this.state.loaded && <h1>Loading...</h1>}
-            {this.state.loaded &&
-            <ul>
-                {this.state.items.map(item => {
-                    return (<l1> {item.name} is selling for {item.highestBid} </l1>)
-                })}
-            </ul>}
+            <Navbar />
+            <br/><br/>
+            <div className="container m-5">
+                <h1>Watchlist: </h1>
+                {!this.state.loaded && <h1>Loading...</h1>}
+                {this.state.loaded &&
+                <div>
+                    {this.state.items.map(item => {
+                        return (
+                            <div>
+                            <Watchlist_card 
+                                key = {item._id}
+                                name = {item.name}
+                                endTime = {item.endTime}
+                                currentBid = {item.highestBid}
+                            />
+                            </div>
+                            // <l1> {item.name} is selling for {item.highestBid} </l1>
+                        )
+                    })}
+                </div>}
+            </div>
+            <Footer />
             </>
         )
     }
