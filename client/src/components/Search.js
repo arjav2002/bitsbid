@@ -6,7 +6,7 @@ import Pagination from '@mui/material/Pagination'
 import Navbar from './Navbar'
 import { useParams } from 'react-router'
 
-const {REACT_APP_SERVER_IP, REACT_APP_PORT} = process.env
+const { REACT_APP_SERVER_IP, REACT_APP_PORT } = process.env
 
 const Search = () => {
 
