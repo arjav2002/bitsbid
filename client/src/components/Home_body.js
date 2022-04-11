@@ -42,14 +42,15 @@ const Body = () => {
         <Carousel />
 
         <div className="d-flex flex-row justify-content-start">
-            <div style={{flexGrow: 0.5, backgroundColor: '#fafafa', margin: '10px'}} className="d-flex flex-column justify-content-start">
-                <div className="container ms-2 mt-3 mb-4 h5" >Apply filters</div>
+            <div style={{flexGrow: 0.75, backgroundColor: '#fafafa', margin: '10px'}} className="d-flex flex-column justify-content-start">
+                <div className="container ms-2 mt-3 mb-3 h5" >Apply filters</div>
                 {
-                    categories.map(category => {
-                    <>
-                        <input type="checkbox" id={category} value={category} />
-                        <label for={category}>{category}</label>
-                    </>})
+                    categories.map(category => 
+                        <div className="d-flex flex-row ms-4 mb-1">
+                            <label for={category} className="me-2">{category}</label>
+                            <input type="checkbox" id={category} value={category} />
+                        </div>
+                    )
                 }
             </div>
             <div style={{flexGrow: 2}}>
