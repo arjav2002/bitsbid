@@ -75,7 +75,7 @@ const Body = () => {
         <div className="container">
             <div className="row justify-content-md-center">
                 <div className="col-md-auto">
-                    <Pagination count={itemsData.totalPages} page={currentPage} onChange={handleChange}/>
+                    <Pagination count={itemsData.totalPages} page={currentPage} onChange={handleChange} />
                 </div>
             </div>
         </div>
