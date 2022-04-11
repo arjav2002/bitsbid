@@ -263,6 +263,33 @@ app.get("/search", checkAuthenticate, async(req, res) => {
         totalPages: Math.ceil(count/PAGE_SIZE)})
 })
 
+app.post("/postQuestion", checkAuthenticate, async(req, res) => {
+    const newQuestionId = new mongoose.Types.ObjectId()
+    await Item.findOneAndUpdate(req.query.id, 
+        {$push: {questions: {_id: newQuestionId, questionText: req.query.ques, userId: req.user.email}}})
+    res.status(200).send(newQuestionId)
+})
+
+app.post("/postAnswer", checkAuthenticate, async(req, res) => {
+    const sellerId = (await Item.findOne({_id: req.query.id})).sellerId
+    if(sellerId !== req.user.email) {
+        return res.status(401).send("User is not a seller.")
+    }
+    try {
+        await Item.findOneAndUpdate({_id: req.query.id, questions: { $elemMatch: {_id: req.query.ques}}},
+            {$set: {'questions.$.answerText': req.query.ans}})
+    }
+    catch(err) {
+        return res.status(500).send(err)
+    }
+    console.log("looks like it worked")
+    return res.status(200).send("Answer posted")
+})
+
+app.get('/currentUser', checkAuthenticate, (req, res) => {
+    return res.status(200).send(req.user.email)
+})
+
 app.get("/", (req, res) => {
     res.sendFile(path.join("client", "build", "index.html"), {root: path.resolve(__dirname, '..')});
 });
