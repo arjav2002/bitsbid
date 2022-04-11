@@ -78,7 +78,7 @@ const Search = () => {
     <br />
     <br />
                   
-
+    <div className="ms-5 mt-5 mb-4 h4">{result}</div>
     <div className="d-flex flex-row justify-content-start">
       <div style={{flexGrow: 0.55, backgroundColor: '#fafafa', margin: '10px'}} className="d-flex flex-column justify-content-start">
         <div className="container ms-2 mt-3 mb-3 h5" >Apply filters</div>

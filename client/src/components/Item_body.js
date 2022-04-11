@@ -72,45 +72,45 @@ const Item_body = ({ itemid }) => {
 							</div>
 						</div>
 
-            <div className="container ms-3">
-                <div className="row mt-4 mb-4">
-                    <div className="col h2">{itemObj.name}</div>
-                    <div className="col">{itemObj.category}</div>
-                </div>
-                <div className="row mt-4 mb-4">
-                    <div className="col">
-                        <p><i>
-                            {itemObj.description}
-                        </i></p>
-                    </div>
-                    <div className="col">
-                        Minimum Bid: {itemObj.minBid}
-                    </div>
-                </div>
-                <div className="row mt-4 mb-4">
-                    <div className="col">
-                        <h5>Current Bid: {itemObj.highestBid?itemObj.highestBid:"No bids yet."}</h5>
-                    </div>
-                    <div className="col">
-                        <h5>Time remaining: <TimeCounter timeLeft={timeLeft} /></h5>
-                    </div>
-                </div>
-                <div className="row mt-4">
-                    <div className="col-3">
-                        <input className="form-control me-2" onInput={e => setBidAmount(parseInt(e.target.value))} placeholder="Enter bid amount" type="number" aria-label="Search"/>
-                    </div>
-                    <div className="col">
-                        <button className="btn btn-danger ms-2" onClick={submitBid}>BID</button>
-                    </div>
-                    <div className="col">
-                        <button className="btn rounded-pill btn-dark me-2 text-nowrap" onClick={addToWatchlist}>Add to Watchlist</button>
-                    </div>
-                </div>
-                <div className="row mt-1">
-                    <div style={{color: 'red'}} className="col">{errorMessage}</div>
-                </div>
-            </div>
-        </div>
+						<div className="container ms-3">
+							<div className="row mt-4 mb-4">
+								<div className="col h2">{itemObj.name}</div>
+								<div className="col">{itemObj.category}</div>
+							</div>
+							<div className="row mt-4 mb-4">
+								<div className="col">
+									<p><i>
+										{itemObj.description}
+									</i></p>
+								</div>
+								<div className="col">
+									Minimum Bid: {itemObj.minBid}
+								</div>
+							</div>
+							<div className="row mt-4 mb-4">
+								<div className="col">
+									<h5>Current Bid: {itemObj.highestBid?itemObj.highestBid:"No bids yet."}</h5>
+								</div>
+								<div className="col">
+									<h5>Time remaining: <TimeCounter timeLeft={timeLeft} /></h5>
+								</div>
+							</div>
+							<div className="row mt-4">
+								<div className="col-3">
+									<input className="form-control me-2" onInput={e => setBidAmount(parseInt(e.target.value))} placeholder="Enter bid amount" type="number" aria-label="Search"/>
+								</div>
+								<div className="col">
+									<button className="btn btn-danger ms-2" onClick={submitBid}>BID</button>
+								</div>
+								<div className="col">
+									<button className="btn rounded-pill btn-dark me-2 text-nowrap" onClick={addToWatchlist}>Add to Watchlist</button>
+								</div>
+							</div>
+							<div className="row mt-1">
+								<div style={{color: 'red'}} className="col">{errorMessage}</div>
+							</div>
+						</div>
+					</div>
 
 					{/* <hr style={{ width: '85%', margin: 'auto' }} /> */}
 

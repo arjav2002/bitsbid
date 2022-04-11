@@ -1,4 +1,4 @@
-import {React, useState} from 'react'
+import { React, useState } from 'react'
 import logo from '../img/logo_fin.png'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
@@ -6,6 +6,9 @@ import {SERVER_URL} from './utils'
 import { useNavigate } from 'react-router'
 
 const Navbar = () => {
+
+  const [searchStr, setSearchStr] = useState("")
+  const handleSearch = e => setSearchStr(e.target.value)
 
   const navigate = useNavigate()
 
@@ -16,8 +19,6 @@ const Navbar = () => {
     })
     .catch(err => console.log(err))
   }
-  const [searchStr, setSearchStr] = useState("")
-  const handleSearch = e => setSearchStr(e.target.value)
 
   return (
     <>
