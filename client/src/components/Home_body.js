@@ -37,7 +37,7 @@ const Body = () => {
     ]
 
     return (
-    <>
+    <div>
         <br />
         <Carousel />
 
@@ -66,17 +66,21 @@ const Body = () => {
                     { loading && (<h3>Loading...</h3>) }
                     { !loading && (
                         <div className="row">
-                            {itemsData.items.map(item => (
-                                <div className="col-4 mb-5 d-flex justify-content-center">
-                                    <Link to={`/item/${item._id}`} className="text-decoration-none">
-                                        <Card
-                                            key = {item._id}
-                                            name = {item.name}
-                                            image = {item.photo}
-                                        />
-                                    </Link>
-                                </div>
-                            ))}
+                            {itemsData.items.map(item => {
+                                return (
+                                    <div className="col-4 mb-5 d-flex justify-content-center">
+                                        <Link to={`/item/${item._id}`} className="text-decoration-none">
+                                            <Card
+                                                key = {item._id}
+                                                name = {item.name}
+                                                time = {new Date(item.endTime) - Date.now()}
+                                                currBid = {item.highestBid ? item.highestBid : "No bids yet"}
+                                                newImage = {item.photo}
+                                            />
+                                        </Link>
+                                    </div>
+                                )
+                            })}
                         </div>
                     )}
                 </div>
@@ -90,7 +94,7 @@ const Body = () => {
                 </div>
             </div>
         </div>
-    </>
+    </div>
     )
 }
 
