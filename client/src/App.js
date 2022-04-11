@@ -19,7 +19,7 @@ function App() {
           <Route exact path='/sell' element={<Sell />} />
           <Route exact path='/my-items' element={<MyItems />} />
           <Route exact path='/my-watchlist' element={<Watchlist />} />
-          <Route exact path='/search/:id' element={<Search />} />
+          <Route exact path='/search/:searchString' element={<Search />} />
         </Routes>
       </Router>
     );

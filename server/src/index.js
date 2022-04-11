@@ -28,6 +28,7 @@ mongoose.connect(dbURL, { useNewUrlParser: true, useUnifiedTopology: true })
 //google-auth
 const {OAuth2Client} = require('google-auth-library');
 const watchlist = require('./models/watchlist');
+const { query } = require('express');
 CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
 const client = new OAuth2Client(CLIENT_ID);
 
@@ -138,7 +139,7 @@ app.post('/watchlist', checkAuthenticate, async(req, res)=> {
     }
     if(!obj) return res.status(404).send("Item with given id does not exist.");
     await User.findByIdAndUpdate(req.user.id, {$addToSet: {watchlist: obj.id}});
-    await watchlist.findOneAndUpdate({itemId: obj.id}, {$addToSet: {watchingUsers: req.user.email}})
+    await watchingUsers.findOneAndUpdate({itemId: obj.id}, {$addToSet: {watchingUsers: req.user.email}}, {upsert: true})
 
     res.status(200).send("Item added to watchlist.")
 })
@@ -167,10 +168,10 @@ app.post('/bidItem', checkAuthenticate, async(req, res)=> {
             id: item._id
         })
 
-        await User.findOneAndUpdate({email: req.user.email}, {$pull: {"bids.itemID": item.id}})
-        await User.findOneAndUpdate({email: req.user.email}, {$push: {bids: {itemID : item.id, bidAmount:req.query.bid}}})
+        await User.findOneAndUpdate({email: req.user.email}, {$pull: {bids: {itemId: item._id}}})
+        await User.findOneAndUpdate({email: req.user.email}, {$push: {bids: {itemId : item._id, bidAmount:req.query.bid}}})
         
-        await biddingUsers.findOneAndUpdate({itemId: item._id}, {$addToSet: req.user.email})
+        await biddingUsers.findOneAndUpdate({itemId: item._id}, {$addToSet: { biddingUsers: req.user.email}}, {upsert: true})
         return res.status(200).send('updated user bids');
     }
 })
@@ -237,8 +238,30 @@ app.get("/itemspage", checkAuthenticate, async(req, res) => {
         return res.status(400).send("Page Number is not a Positive Integer")
     }
 
-    return res.json({items: await Item.find().skip((pgno-1)*PAGE_SIZE).limit(PAGE_SIZE), totalPages: Math.ceil((await Item.count())/PAGE_SIZE)})
+    return res.json({
+        items: await Item.find().skip((pgno-1)*PAGE_SIZE).limit(PAGE_SIZE),
+        totalPages: Math.ceil((await Item.count())/PAGE_SIZE)})
 });
+
+app.get("/search", checkAuthenticate, async(req, res) => {
+    const searchString = req.query.searchString
+    const categoryFilters = req.query.categoryFilters
+    const pgno = Number(req.query.pgno)
+    if(!Number.isInteger(pgno) || pgno <= 0) {
+        return res.status(400).send("Page Number is not a Positive Integer")
+    }
+
+    const queryObj = {}
+    if(searchString.length) queryObj.name = { $regex: searchString }
+    if(categoryFilters) queryObj.category = { $in: categoryFilters }
+
+    const count = await Item.count(queryObj)
+
+    return res.json({
+        items: await Item.find(queryObj).skip((pgno-1)*PAGE_SIZE).limit(PAGE_SIZE),
+        totalItems: count,
+        totalPages: Math.ceil(count/PAGE_SIZE)})
+})
 
 app.get("/", (req, res) => {
     res.sendFile(path.join("client", "build", "index.html"), {root: path.resolve(__dirname, '..')});
