@@ -62,17 +62,18 @@ class Watchlist extends React.Component {
                 {this.state.loaded &&
                 <div>
                     {this.state.items.map(item => {
+                        console.log(item)
                         return (
                             <div>
                             <Watchlist_card 
-                                key = {item._id}
+                                id = {item._id}
                                 name = {item.name}
                                 endTime = {item.endTime}
                                 currentBid = {item.highestBid}
                                 image = {item.photo}
+                                minimumBid = {item.minBid}
                             />
                             </div>
-                            // <l1> {item.name} is selling for {item.highestBid} </l1>
                         )
                     })}
                 </div>}
