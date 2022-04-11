@@ -6,6 +6,8 @@ import axios from 'axios'
 import Pagination from '@mui/material/Pagination'
 import './Home_body.css'
 
+import { categories } from './utils'
+
 const {REACT_APP_SERVER_IP, REACT_APP_PORT} = process.env
 
 const Body = () => {
@@ -39,47 +41,55 @@ const Body = () => {
         <br />
         <Carousel />
 
-        <div className="container mt-5 mb-4 h3" >Items</div>              
+        <div className="d-flex flex-row justify-content-start">
+            <div style={{flexGrow: 0.5, backgroundColor: '#fafafa', margin: '10px'}} className="d-flex flex-column justify-content-start">
+                <div className="container ms-2 mt-3 mb-4 h5" >Apply filters</div>
+                {
+                    categories.map(category => {
+                    <>
+                        <input type="checkbox" id={category} value={category} />
+                        <label for={category}>{category}</label>
+                    </>})
+                }
+            </div>
+            <div style={{flexGrow: 2}}>
+                <div className="container mt-5 mb-4 h3" >Items</div>              
+                <div className="container">
+                    <div className="row justify-content-md-center">
+                        <div className="col-md-auto">
+                            <Pagination count={itemsData.totalPages} page={currentPage} onChange={handleChange}/>
+                        </div>
+                    </div>
+                </div>
 
-        <div className="container">
-            <div className="row justify-content-md-center">
-                <div className="col-md-auto">
-                    <Pagination count={itemsData.totalPages} page={currentPage} onChange={handleChange}/>
+                <div className="container mt-5">
+                    { loading && (<h3>Loading...</h3>) }
+                    { !loading && (
+                        <div className="row">
+                            {itemsData.items.map(item => (
+                                <div className="col-4 mb-5 d-flex justify-content-center">
+                                    <Link to={`/item/${item._id}`} className="text-decoration-none">
+                                        <Card
+                                            key = {item._id}
+                                            name = {item.name}
+                                            image = {item.photo}
+                                        />
+                                    </Link>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
+
+                <div className="container">
+                    <div className="row justify-content-md-center">
+                        <div className="col-md-auto">
+                            <Pagination count={itemsData.totalPages} page={currentPage} onChange={handleChange}/>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-
-        <div className="container mt-5">
-            { loading && (<h3>Loading...</h3>) }
-            { !loading && (
-                <div className="row">
-                    {itemsData.items.map(item => {
-                        return (
-                            <div className="col-4 mb-5 d-flex justify-content-center">
-                                <Link to={`/item/${item._id}`} className="text-decoration-none">
-                                    <Card
-                                        key = {item._id}
-                                        name = {item.name}
-                                        time = {new Date(item.endTime) - Date.now()}
-                                        currBid = {item.highestBid ? item.highestBid : "No bids yet"}
-                                        newImage = {item.photo}
-                                    />
-                                </Link>
-                            </div>
-                        )
-                    })}
-                </div>
-            )}
-        </div>
-
-        <div className="container">
-            <div className="row justify-content-md-center">
-                <div className="col-md-auto">
-                    <Pagination count={itemsData.totalPages} page={currentPage} onChange={handleChange}/>
-                </div>
-            </div>
-        </div>
-        <br />
     </>
     )
 }

@@ -8,7 +8,8 @@ const Item = new Schema({
   description:  String,
   endTime:      {type: Date, required: true},
   photo:        String,
-  highestBid:   {userId: Schema.Types.ObjectId, bidAmount: {type: Number, min: 0}}
+  highestBid:   {userId: Schema.Types.ObjectId, bidAmount: {type: Number, min: 0}},
+  category:     String,
 })
 
 module.exports = mongoose.model('Item', Item)

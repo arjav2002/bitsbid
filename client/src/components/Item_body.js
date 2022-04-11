@@ -72,9 +72,8 @@ const Item_body = ({itemid}) => {
 
             <div className="container ms-3">
                 <div className="row mt-4 mb-4">
-                    <div className="col">
-                        <h2>{itemObj.name}</h2>
-                    </div>
+                    <div className="col h2">{itemObj.name}</div>
+                    <div className="col">{itemObj.category}</div>
                 </div>
                 <div className="row mt-4 mb-4">
                     <div className="col">

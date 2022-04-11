@@ -10,6 +10,8 @@ const mongoose = require('mongoose')
 const User = require('./models/user')
 const Item = require('./models/item')
 const SoldItem = require('./models/solditem')
+const watchingUsers = require('./models/watchlist')
+const biddingUsers = require('./models/bidlist')
 const bodyParser = require('body-parser')
 
 app.use(express.json({limit: '15mb'}))
@@ -25,6 +27,7 @@ mongoose.connect(dbURL, { useNewUrlParser: true, useUnifiedTopology: true })
 
 //google-auth
 const {OAuth2Client} = require('google-auth-library');
+const watchlist = require('./models/watchlist');
 CLIENT_ID = process.env.REACT_APP_CLIENT_ID;
 const client = new OAuth2Client(CLIENT_ID);
 
@@ -86,6 +89,7 @@ app.delete('/item', checkAuthenticate, checkSeller, async(req, res) => {
     if(req.query.id) {
         let item = await Item.findOneAndDelete({_id: req.query.id})
         await User.findOneAndUpdate({email: req.user.email}, {$pull: {items: item.id}})
+        
         res.status(200).send("Item deleted successfully")
     }
     else {
@@ -103,7 +107,8 @@ app.post('/item', checkAuthenticate, checkSeller, async(req, res)=> {
                         description: req.body.description,
                         endTime: req.body.endTime,
                         photo: req.body.photo,
-                        minBid: req.body.minBid
+                        minBid: req.body.minBid,
+                        category: req.body.category
                     })
     }
     else {
@@ -112,7 +117,8 @@ app.post('/item', checkAuthenticate, checkSeller, async(req, res)=> {
             description: req.body.description,
             endTime: req.body.endTime,
             photo: req.body.photo,
-            minBid: req.body.minBid
+            minBid: req.body.minBid,
+            category: req.body.category
         }, {new: true})
     }
 
@@ -132,6 +138,7 @@ app.post('/watchlist', checkAuthenticate, async(req, res)=> {
     }
     if(!obj) return res.status(404).send("Item with given id does not exist.");
     await User.findByIdAndUpdate(req.user.id, {$addToSet: {watchlist: obj.id}});
+    await watchlist.findOneAndUpdate({itemId: obj.id}, {$addToSet: {watchingUsers: req.user.email}})
 
     res.status(200).send("Item added to watchlist.")
 })
@@ -160,8 +167,11 @@ app.post('/bidItem', checkAuthenticate, async(req, res)=> {
             id: item._id
         })
 
+        await User.findOneAndUpdate({email: req.user.email}, {$pull: {"bids.itemID": item.id}})
         await User.findOneAndUpdate({email: req.user.email}, {$push: {bids: {itemID : item.id, bidAmount:req.query.bid}}})
-        return res.status(200).send('bid added to user bids');
+        
+        await biddingUsers.findOneAndUpdate({itemId: item._id}, {$addToSet: req.user.email})
+        return res.status(200).send('updated user bids');
     }
 })
 

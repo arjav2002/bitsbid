@@ -15,6 +15,8 @@ export const get24hrTime = function(date) {
     return (h<10?"0":"") + h + ":" + (m<10?"0":"") + m
 }
 
+export const categories = ["None", "Book", "Electronics", "Stationery", "Bathroom Supplies", "Study Material", "Poster", "Sports"]
+
 export const getRemainingTimeString = function(timeLeft) {
     let ms = timeLeft
     const week = Math.floor(ms/WEEK)

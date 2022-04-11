@@ -2,9 +2,11 @@ import axios from "axios"
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import "./Sell.css"
+
+import { categories } from './utils'
+
 const {REACT_APP_SERVER_IP, REACT_APP_PORT} = process.env
 
-const image = ""
 
 const Sell = () => {
 
@@ -24,6 +26,7 @@ const Sell = () => {
   const [endDate, setEndDate] = useState("")
   const [endTime, setEndTime] = useState("")
   const [minBid, setMinBid] = useState("")
+  const [category, setCategory ] = useState("")
   const [desc, setDesc] = useState("")
   const [image, setImage] = useState("")
 
@@ -34,6 +37,7 @@ const Sell = () => {
   const handleEndDate = e => setEndDate(e.target.value)
   const handleEndTime = e => setEndTime(e.target.value)
   const handleMinBid = e => setMinBid(e.target.value)
+  const handleCategory = e => setCategory(e.target.value)
   const handleDesc = e => setDesc(e.target.value)
   const handleImage = (e) => {   
 
@@ -77,7 +81,8 @@ const Sell = () => {
         endTime: date,
         minBid: parseInt(minBid),
         description: desc,
-        photo: image
+        photo: image,
+        category: category
       })
       .then(res => navigate(-1))
       .catch(err => {
@@ -103,7 +108,7 @@ const Sell = () => {
       <div className="container">
         <form onSubmit={handleSubmit}>
         <div className="row justify-content-md-center align-items-center mt-5">
-        <div className="col-md-2 text-center">Title</div>
+          <div className="col-md-2 text-center">Title</div>
           <div className="col-md-4 text-center">
             <div className="form-group">
               <input type="text" className="form-control" required={true} placeholder="Enter title" value={title} onChange={handleTitle}/>
@@ -112,7 +117,7 @@ const Sell = () => {
         </div>
 
         <div className="row justify-content-md-center align-items-center mt-4">
-        <div className="col-md-2 text-center">End Date</div>
+          <div className="col-md-2 text-center">End Date</div>
           <div className="col-md-4 text-center">
             <div className="form-group">
               <input type="date" className="form-control" required={true} min={today} value={endDate} onChange={handleEndDate}/>
@@ -121,7 +126,7 @@ const Sell = () => {
         </div>
 
         <div className="row justify-content-md-center align-items-center mt-4">
-        <div className="col-md-2 text-center">End Time</div>
+          <div className="col-md-2 text-center">End Time</div>
           <div className="col-md-4 text-center">
             <div className="form-group">
               <input type="time" className="form-control" required={true}  value={endTime} onChange={handleEndTime}/>
@@ -130,7 +135,7 @@ const Sell = () => {
         </div>
 
         <div className="row justify-content-md-center align-items-center mt-4">
-        <div className="col-md-2 text-center">Minimum Bid</div>
+          <div className="col-md-2 text-center">Minimum Bid</div>
           <div className="col-md-4 text-center">
             <div className="form-group">
               <input 
@@ -143,7 +148,18 @@ const Sell = () => {
         </div>
 
         <div className="row justify-content-md-center align-items-center mt-4">
-        <div className="col-md-2 text-center">Description</div>
+          <div className="col-md-2 text-center">Category</div>
+          <div className="col-md-4 text-center d-flex flex-row align-items-start">
+            <select onChange={handleCategory} >
+              {
+                categories.map(category => <option value={category}>{category}</option>)
+              }
+            </select>
+          </div>
+        </div>
+
+        <div className="row justify-content-md-center align-items-center mt-4">
+          <div className="col-md-2 text-center">Description</div>
           <div className="col-md-4 text-center">
             <div className="form-group">
               <textarea className="form-control" rows="3" placeholder="Enter description" value={desc} onChange={handleDesc} />
@@ -152,7 +168,7 @@ const Sell = () => {
         </div>
 
         <div className="row justify-content-md-center align-items-center mt-4">
-        <div className="col-md-2 text-center">Image</div>
+          <div className="col-md-2 text-center">Image</div>
           <div className="col-md-4 text-start">
             <div className="form-group">
               <input type="file" className="form-control-file" accept=".png, .jpg, .jpeg" onChange={handleImage}/>

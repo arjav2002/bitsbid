@@ -7,7 +7,7 @@ import { faPenToSquare, faTrashCan, faFloppyDisk } from '@fortawesome/free-solid
 
 import { Link } from 'react-router-dom'
 
-import { get24hrTime, TimeCounter } from './utils'
+import { get24hrTime, TimeCounter, categories } from './utils'
 
 const {REACT_APP_SERVER_IP, REACT_APP_PORT} = process.env
 
@@ -35,6 +35,7 @@ class EditableItem extends React.Component {
             name: this.state.name,
             description: this.state.description,
             endTime: this.state.endTime,
+            category: this.state.category,
             photo: this.props.photo,
             minBid: this.state.minBid
         },
@@ -46,6 +47,7 @@ class EditableItem extends React.Component {
         this.props.description = this.state.description
         this.props.endTime = this.state.endTime.toString()
         this.props.minBid = this.state.minBid
+        this.props.category = this.state.category
         this.setState({editing: false, timeLeft: this.state.endTime - Date.now()})
     }
 
@@ -54,6 +56,7 @@ class EditableItem extends React.Component {
             name: this.props.name,
             description: this.props.description,
             minBid: this.props.minBid,
+            category: this.props.category,
             endTime: new Date(this.props.endTime),
             editing: true
         })
@@ -92,9 +95,9 @@ class EditableItem extends React.Component {
                 </div>
                 <div className="card-body" style={{padding:0}}>
                 {!this.state.editing && (
-                    <div className="d-flex flex-row" style={{width: '80%'}}>
+                    <div className="d-flex flex-row" style={{width: '100%'}}>
                     <Link className="d-flex flex-row justify-content-center" to={`/item/${this.props.itemid}`} style={{ width: '90%', color: 'inherit', textDecoration: 'inherit' }}>
-                    <div className="ms-3 d-flex flex-column" style={{width: '60%'}}>
+                    <div className="ms-3 d-flex flex-column">
                         <div className="row mt-4 mb-4">
                             <div className="col">
                                 <h2>{this.props.name}</h2>
@@ -109,8 +112,11 @@ class EditableItem extends React.Component {
                                     <p style={{color: 'gray'}}>No bids yet.</p>
                                 }</h5>
                             </div>
-                            <div className= "col ms-5 me-5">
+                            <div className= "col ms-5">
                                 <h5 style={{whiteSpace: 'nowrap'}}>Minimum Bid: {this.props.minBid}</h5>
+                            </div>
+                            <div className= "col ms-5 me-5">
+                                <h5 style={{whiteSpace: 'nowrap'}}>Category: {this.props.category}</h5>
                             </div>
                         </div>
                         <div className="row mt-4 mb-4 d-flex flex-row justify-content-between">
@@ -138,7 +144,7 @@ class EditableItem extends React.Component {
                     </div>
                 )}
                 {this.state.editing && (
-                    <div className="ms-5 d-flex flex-row" style={{width: '80%'}}>
+                    <div className="ms-5 d-flex flex-row" style={{width: '100%'}}>
                     <div className="ms-5 d-flex flex-column" style={{width: '90%'}}>
                         <div className="row mt-4 mb-4">
                             <div className="col">
@@ -154,11 +160,19 @@ class EditableItem extends React.Component {
                                     <p style={{color: 'gray'}}>No bids yet.</p>
                                 }</h5>
                             </div>
-                            <div className= "col ms-5 me-5">
+                            <div className= "col ms-5">
                                 <h5 style={{whiteSpace: 'nowrap'}}>Minimum Bid:</h5>
                                 <input type="number"
                                 min={this.props.highestBid?this.props.highestBid:0}
                                 required={true} placeholder="Enter amount in Rs." value={this.state.minBid} onChange={e => {this.setState({minBid: e.target.value})}}/>  
+                            </div>
+                            <div className= "col ms-5 me-5">
+                                <h5 style={{whiteSpace: 'nowrap'}}>Category:</h5>
+                                <select value={this.state.category} onChange={e => {this.setState({category: e.target.value})}} >
+                                {
+                                    categories.map(category => <option value={category}>{category}</option>)
+                                }
+                                </select> 
                             </div>
                         </div>
                         <div className="row mt-4 mb-4 d-flex flex-row justify-content-between">
