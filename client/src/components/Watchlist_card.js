@@ -2,14 +2,14 @@ import React from 'react'
 import logo from '../img/showcase.jpg'
 import { TimeCounter } from './utils'
 
-const Watchlist_cards = ({key, name, endTime, currentBid}) => {
+const Watchlist_cards = ({ name, endTime, currentBid, image }) => {
 
   return (
     <>
       <div className="card m-5">
         <div className="row g-0">
           <div className="col-md-4">
-            <img src={logo} className="card-img-top" alt="..." />
+            <img id="imageContainer" src={image ? image : logo} className="card-img-top" alt="..." />
           </div>
           <div className="col-md-8">
             <div className="card-body">

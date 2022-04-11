@@ -62,7 +62,7 @@ const Body = () => {
                                         name = {item.name}
                                         time = {new Date(item.endTime) - Date.now()}
                                         currBid = {item.highestBid ? item.highestBid : "No bids yet"}
-                                        newImage = {item.photo}
+                                        image = {item.photo}
                                     />
                                 </Link>
                             </div>
@@ -75,7 +75,7 @@ const Body = () => {
         <div className="container">
             <div className="row justify-content-md-center">
                 <div className="col-md-auto">
-                    <Pagination count={itemsData.totalPages} page={currentPage} onChange={handleChange}/>
+                    <Pagination count={itemsData.totalPages} page={currentPage} onChange={handleChange} />
                 </div>
             </div>
         </div>
