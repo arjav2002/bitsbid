@@ -12,6 +12,7 @@ const Item_page = () => {
   return (
     <>
         <Navbar />
+        <br />
         <Item_body itemid={id}/>
         <Footer />
     </>

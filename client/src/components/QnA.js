@@ -134,7 +134,7 @@ const QnA = ({ itemid, sellerId, qna }) => {
                 <Accordion.Item eventKey="0">
                   <Accordion.Header>{x.questionText}</Accordion.Header>
                   <Accordion.Body>
-                    <div className='text-muted mb-2'>{x.answerText}</div>
+                    <div className='text-muted mb-2'>{x.answerText?x.answerText:"No answer yet!"}</div>
                     <button className={"btn btn-success mt-2 "+(isSeller?"":"d-none")} onClick={() => handleShowAns(x.questionText, x.answerText)}>{x.answerText ? "Edit" : "Answer"}</button>
                   </Accordion.Body>
                 </Accordion.Item>

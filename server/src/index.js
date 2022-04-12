@@ -265,18 +265,19 @@ app.get("/search", checkAuthenticate, async(req, res) => {
 
 app.post("/postQuestion", checkAuthenticate, async(req, res) => {
     const newQuestionId = new mongoose.Types.ObjectId()
-    await Item.findOneAndUpdate(req.query.id, 
+    await Item.findOneAndUpdate({_id: req.query.id}, 
         {$push: {questions: {_id: newQuestionId, questionText: req.query.ques, userId: req.user.email}}})
     res.status(200).send(newQuestionId)
 })
 
 app.post("/postAnswer", checkAuthenticate, async(req, res) => {
+    console.log(req.query.ques, req.query.ans);
     const sellerId = (await Item.findOne({_id: req.query.id})).sellerId
     if(sellerId !== req.user.email) {
         return res.status(401).send("User is not a seller.")
     }
     try {
-        await Item.findOneAndUpdate({_id: req.query.id, questions: { $elemMatch: {_id: req.query.ques}}},
+        await Item.findOneAndUpdate({_id: req.query.id, questions: { $elemMatch: {questionText: req.query.ques}}},
             {$set: {'questions.$.answerText': req.query.ans}})
     }
     catch(err) {

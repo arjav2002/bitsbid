@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import logo from '../img/showcase.jpg'
 import axios from 'axios'
 import { TimeCounter } from './utils'
+import QnA from './QnA'
 
 const { REACT_APP_SERVER_IP, REACT_APP_PORT } = process.env
 
@@ -112,16 +113,13 @@ const Item_body = ({ itemid }) => {
 						</div>
 					</div>
 
-					{/* <hr style={{ width: '85%', margin: 'auto' }} /> */}
+					<hr style={{ width: '85%', margin: 'auto' }} />
 
-					{/* <div className="container mt-5 mb-5">
+					<div className="container mt-5 mb-5">
 						<div className='row'>
-							<div className='col h3'>QnA</div>
-							<div className='col' style={{ flex: 0 }}>
-								<button className="btn btn-danger text-nowrap" type="submit">Ask a Question</button>
-							</div>
+							<QnA itemid={itemid} sellerId={itemObj.sellerId} qna={itemObj.questions}/>
 						</div>
-				</div> */}
+					</div>
 				</>
 			}
 			</div>
