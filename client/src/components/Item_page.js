@@ -11,9 +11,10 @@ const Item_page = () => {
 
   return (
     <>
-        <Navbar />
-        <Item_body itemid={id}/>
-        <Footer />
+      <Navbar />
+      <br />
+      <Item_body itemid={id}/>
+      <Footer />
     </>
   )
 }

@@ -265,7 +265,7 @@ app.get("/search", checkAuthenticate, async(req, res) => {
 
 app.post("/postQuestion", checkAuthenticate, async(req, res) => {
     const newQuestionId = new mongoose.Types.ObjectId()
-    await Item.findOneAndUpdate(req.query.id, 
+    await Item.findOneAndUpdate({_id: req.query.id}, 
         {$push: {questions: {_id: newQuestionId, questionText: req.query.ques, userId: req.user.email}}})
     res.status(200).send(newQuestionId)
 })
@@ -276,14 +276,25 @@ app.post("/postAnswer", checkAuthenticate, async(req, res) => {
         return res.status(401).send("User is not a seller.")
     }
     try {
-        await Item.findOneAndUpdate({_id: req.query.id, questions: { $elemMatch: {_id: req.query.ques}}},
+        await Item.findOneAndUpdate({_id: req.query.id, questions: { $elemMatch: {_id: req.query.quesId}}},
             {$set: {'questions.$.answerText': req.query.ans}})
     }
     catch(err) {
         return res.status(500).send(err)
     }
-    console.log("looks like it worked")
     return res.status(200).send("Answer posted")
+})
+
+app.delete('/deleteQues', checkAuthenticate, async(req, res) => {
+    if(req.body.id) {
+        await Item.findOneAndUpdate({_id: req.body.id}, 
+            {$pull: {questions: {_id: req.body.quesId}}})
+        
+        res.status(200).send("Item deleted successfully")
+    }
+    else {
+        res.status(400).send('item id cannot be undefined.');
+    }
 })
 
 app.get('/currentUser', checkAuthenticate, (req, res) => {
