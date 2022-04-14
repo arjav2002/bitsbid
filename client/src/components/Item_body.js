@@ -126,4 +126,4 @@ const Item_body = ({ itemid }) => {
   )
 }
 
-			export default Item_body
+export default Item_body

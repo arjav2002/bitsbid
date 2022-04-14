@@ -271,20 +271,30 @@ app.post("/postQuestion", checkAuthenticate, async(req, res) => {
 })
 
 app.post("/postAnswer", checkAuthenticate, async(req, res) => {
-    console.log(req.query.ques, req.query.ans);
     const sellerId = (await Item.findOne({_id: req.query.id})).sellerId
     if(sellerId !== req.user.email) {
         return res.status(401).send("User is not a seller.")
     }
     try {
-        await Item.findOneAndUpdate({_id: req.query.id, questions: { $elemMatch: {questionText: req.query.ques}}},
+        await Item.findOneAndUpdate({_id: req.query.id, questions: { $elemMatch: {_id: req.query.quesId}}},
             {$set: {'questions.$.answerText': req.query.ans}})
     }
     catch(err) {
         return res.status(500).send(err)
     }
-    console.log("looks like it worked")
     return res.status(200).send("Answer posted")
+})
+
+app.delete('/deleteQues', checkAuthenticate, async(req, res) => {
+    if(req.body.id) {
+        await Item.findOneAndUpdate({_id: req.body.id}, 
+            {$pull: {questions: {_id: req.body.quesId}}})
+        
+        res.status(200).send("Item deleted successfully")
+    }
+    else {
+        res.status(400).send('item id cannot be undefined.');
+    }
 })
 
 app.get('/currentUser', checkAuthenticate, (req, res) => {
