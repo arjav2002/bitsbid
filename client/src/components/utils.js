@@ -16,6 +16,7 @@ export const get24hrTime = function(date) {
 }
 
 export const categories = ["None", "Book", "Electronics", "Stationery", "Bathroom Supplies", "Study Material", "Poster", "Sports"]
+export const sortBy = ["Title", "Current Bid", "Min Bid", "Time Left"]
 
 export const getRemainingTimeString = function(timeLeft) {
     let ms = timeLeft
