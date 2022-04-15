@@ -5,9 +5,7 @@ import axios from 'axios'
 import Pagination from '@mui/material/Pagination'
 import Navbar from './Navbar'
 import { useParams } from 'react-router'
-import qs from 'qs'
 import { useNavigate } from "react-router-dom"
-// import { sortBy } from './utils'
 
 const { REACT_APP_SERVER_IP, REACT_APP_PORT } = process.env
 

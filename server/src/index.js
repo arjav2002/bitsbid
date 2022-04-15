@@ -244,7 +244,6 @@ app.get("/itemspage", checkAuthenticate, async(req, res) => {
 });
 
 app.get("/search", checkAuthenticate, async(req, res) => {
-    console.log(req.query.categoryFilters)
     const searchString = req.query.searchString
     const categoryFilters = req.query.categoryFilters
     const pgno = Number(req.query.pgno)
@@ -265,7 +264,6 @@ app.get("/search", checkAuthenticate, async(req, res) => {
     else if(sortBy == "Min Bid") items.sort((a,b) => (a.minBid > b.minBid) ? 1 : ((b.minBid > a.minBid) ? -1 : 0))
     else if(sortBy == "Time Left") items.sort((a,b) => (a.endTime.getTime() > b.endTime.getTime()) ? 1 : ((b.endTime.getTime() > a.endTime.getTime()) ? -1 : 0))
 
-    console.log(items);
     return res.json({
         items: items,
         totalItems: count,
