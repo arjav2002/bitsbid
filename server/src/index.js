@@ -316,9 +316,16 @@ app.get("/search", checkAuthenticate, async(req, res) => {
     if(categoryFilters) queryObj.category = { $in: categoryFilters }
 
     const count = await Item.count(queryObj)
+    const items = await Item.find(queryObj).skip((pgno-1)*PAGE_SIZE).limit(PAGE_SIZE)
+
+    const sortBy = req.query.sortBy
+    if(sortBy == "Title") items.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0))
+    else if(sortBy == "Current Bid") items.sort((a,b) => (a.highestBid.bidAmount > b.highestBid.bidAmount) ? 1 : ((b.highestBid.bidAmount > a.highestBid.bidAmount) ? -1 : 0))
+    else if(sortBy == "Min Bid") items.sort((a,b) => (a.minBid > b.minBid) ? 1 : ((b.minBid > a.minBid) ? -1 : 0))
+    else if(sortBy == "Time Left") items.sort((a,b) => (a.endTime.getTime() > b.endTime.getTime()) ? 1 : ((b.endTime.getTime() > a.endTime.getTime()) ? -1 : 0))
 
     return res.json({
-        items: await Item.find(queryObj).skip((pgno-1)*PAGE_SIZE).limit(PAGE_SIZE),
+        items: items,
         totalItems: count,
         totalPages: Math.ceil(count/PAGE_SIZE)})
 })
