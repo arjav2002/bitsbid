@@ -13,6 +13,51 @@ const SoldItem = require('./models/solditem')
 const watchingUsers = require('./models/watchlist')
 const biddingUsers = require('./models/bidlist')
 const bodyParser = require('body-parser')
+const nodemailer = require('nodemailer');
+const cron = require('node-cron')
+
+var transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'f20190112@hyderabad.bits-pilani.ac.in',
+        pass: 'djzgxeqqwvjizgso'
+    }
+});
+
+var mailOptions = {
+    from: 'f20190112@hyderabad.bits-pilani.ac.in',
+    subject: 'Bitsbid No-Reply',
+};
+
+cron.schedule('0 7 * * *', () => {
+    User.find({}, { email: 1, items: 1})
+    .then(async(infoUsrs) => {
+        infoUsrs.forEach(async(infoUsr) => {
+            var obj, text="";
+            console.log("sending to : "+infoUsr.email);
+            var It = infoUsr.items;
+            for(var i=0 ;i<It.length; i++){
+                console.log(It[i]);
+                obj = await changeToItem(It[i]);
+                text+="you object "+obj.name+" has got highest bid of : "+obj.highestBid+"\n";
+            }
+
+            mailOptions.text = text;
+            mailOptions.to= infoUsr.email;
+            //send an email
+            transporter.sendMail(mailOptions, function(error, info){
+                if (error) {
+                console.log(error);
+                } else {
+                console.log('Email sent: ' + info.response);
+                }
+            });
+        })
+    })
+    .catch((err) => {
+        console.log(err)
+    })
+});
 
 app.use(express.json({limit: '15mb'}))
 app.use(cors())
@@ -141,6 +186,17 @@ app.post('/watchlist', checkAuthenticate, async(req, res)=> {
     await User.findByIdAndUpdate(req.user.id, {$addToSet: {watchlist: obj.id}});
     await watchingUsers.findOneAndUpdate({itemId: obj.id}, {$addToSet: {watchingUsers: req.user.email}}, {upsert: true})
 
+    var Usr = await User.findById(req.user.id);
+    mailOptions.to = Usr.email;    
+    mailOptions.text = obj.name+" with id : "+obj.id+" has been added to your watchlist";
+
+    transporter.sendMail(mailOptions, function(error, info){
+        if (error) {
+          console.log(error);
+        } else {
+          console.log('Email sent: ' + info.response);
+        }
+      });
     res.status(200).send("Item added to watchlist.")
 })
 
@@ -231,6 +287,10 @@ async function checkAuthenticate(req,res,next){
     }
 }
 
+async function changeToItem(itemId){
+    return await Item.findById(itemId);
+}
+
 const PAGE_SIZE = 9
 app.get("/itemspage", checkAuthenticate, async(req, res) => {
     const pgno = Number(req.query.pgno)
@@ -274,6 +334,18 @@ app.post("/postQuestion", checkAuthenticate, async(req, res) => {
     const newQuestionId = new mongoose.Types.ObjectId()
     await Item.findOneAndUpdate({_id: req.query.id}, 
         {$push: {questions: {_id: newQuestionId, questionText: req.query.ques, userId: req.user.email}}})
+    
+    var ItemObj = await Item.findById(req.query.id);
+    mailOptions.to = ItemObj.sellerId;    
+    mailOptions.text = req.user.email+" has asked a question under you obj "+ItemObj.name+" : "+req.query.ques;
+
+    transporter.sendMail(mailOptions, function(error, info){
+    if (error) {
+        console.log(error);
+    } else {
+        console.log('Email sent: ' + info.response);
+    }
+    });
     res.status(200).send(newQuestionId)
 })
 
