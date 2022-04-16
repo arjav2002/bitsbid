@@ -15,7 +15,16 @@ export const get24hrTime = function(date) {
     return (h<10?"0":"") + h + ":" + (m<10?"0":"") + m
 }
 
-export const categories = ["None", "Book", "Electronics", "Stationery", "Bathroom Supplies", "Study Material", "Poster", "Sports"]
+export const filterCategories = [
+    {key: "None", value: false},
+    {key: "Book", value: false},
+    {key: "Electronics", value: false},
+    {key: "Stationery", value: false},
+    {key: "Bathroom Supplies", value: false},
+    {key: "Study Material", value: false},
+    {key: "Poster", value: false},
+    {key: "Sports", value: false}
+  ]
 
 export const getRemainingTimeString = function(timeLeft) {
     let ms = timeLeft
