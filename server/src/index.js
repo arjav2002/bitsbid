@@ -39,7 +39,7 @@ cron.schedule('0 7 * * *', () => {
             for(var i=0 ;i<It.length; i++){
                 console.log(It[i]);
                 obj = await changeToItem(It[i]);
-                text+="you object "+obj.name+" has got highest bid of : "+obj.highestBid+"\n";
+                text+="your object "+obj.name+" has got highest bid of : "+obj.highestBid+"\n";
             }
 
             mailOptions.text = text;
@@ -337,7 +337,7 @@ app.post("/postQuestion", checkAuthenticate, async(req, res) => {
     
     var ItemObj = await Item.findById(req.query.id);
     mailOptions.to = ItemObj.sellerId;    
-    mailOptions.text = req.user.email+" has asked a question under you obj "+ItemObj.name+" : "+req.query.ques;
+    mailOptions.text = req.user.email+" has asked a question under your obj "+ItemObj.name+" : "+req.query.ques;
 
     transporter.sendMail(mailOptions, function(error, info){
     if (error) {
