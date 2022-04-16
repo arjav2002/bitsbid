@@ -1,5 +1,6 @@
 import logo from '../img/showcase.jpg'
 import { TimeCounter } from './utils'
+import './Card.css'
 
 const Card = ({name, time, currBid, image}) => {
 
