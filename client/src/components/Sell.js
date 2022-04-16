@@ -3,7 +3,7 @@ import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 import "./Sell.css"
 
-import { categories } from './utils'
+import { filterCategories } from './utils'
 
 const {REACT_APP_SERVER_IP, REACT_APP_PORT} = process.env
 
@@ -150,9 +150,9 @@ const Sell = () => {
         <div className="row justify-content-md-center align-items-center mt-4">
           <div className="col-md-2 text-center">Category</div>
           <div className="col-md-4 text-center d-flex flex-row align-items-start">
-            <select onChange={handleCategory} >
+            <select className="p-1 pb-2 pe-5" onChange={handleCategory} >
               {
-                categories.map(category => <option value={category}>{category}</option>)
+                filterCategories.map(category => <option value={category.key}>{category.key}</option>)
               }
             </select>
           </div>
@@ -177,7 +177,7 @@ const Sell = () => {
         </div>
 
         <div className="row justify-content-md-center align-items-center mt-4">
-          <div className="col-md-4 text-center mt-5">
+          <div className="col-md-4 text-center mt-4">
           <button type="submit" className="btn btn-danger">Submit</button>
           </div>
         </div>

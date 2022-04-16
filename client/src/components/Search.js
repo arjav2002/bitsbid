@@ -6,6 +6,7 @@ import Pagination from '@mui/material/Pagination'
 import Navbar from './Navbar'
 import { useParams } from 'react-router'
 import { useNavigate } from "react-router-dom"
+import { filterCategories } from './utils'
 
 const { REACT_APP_SERVER_IP, REACT_APP_PORT } = process.env
 
@@ -14,19 +15,8 @@ const Search = () => {
   const navigate = useNavigate()
   const { searchString } = useParams()
   const sortBy = ["Title", "Current Bid", "Min Bid", "Time Left"]
-  const initialCategories = [
-    {key: "None", value: false},
-    {key: "Book", value: false},
-    {key: "Electronics", value: false},
-    {key: "Stationery", value: false},
-    {key: "Bathroom Supplies", value: false},
-    {key: "Study Material", value: false},
-    {key: "Poster", value: false},
-    {key: "Sports", value: false}
-  ]
 
-  const [categories, setCategories] = useState(initialCategories)
-
+  const [categories, setCategories] = useState(filterCategories)
   const [currentPage, setCurrentPage] = useState(1)
   const [loading, setLoading] = useState(true)
   const [itemsData, setItemsData] = useState({ totalPages: 0, totalItems: 0, items: [] })

@@ -7,7 +7,7 @@ import { faPenToSquare, faTrashCan, faFloppyDisk } from '@fortawesome/free-solid
 
 import { Link } from 'react-router-dom'
 
-import { get24hrTime, TimeCounter, categories } from './utils'
+import { get24hrTime, TimeCounter, filterCategories } from './utils'
 
 const {REACT_APP_SERVER_IP, REACT_APP_PORT} = process.env
 
@@ -170,7 +170,7 @@ class EditableItem extends React.Component {
                                 <h5 style={{whiteSpace: 'nowrap'}}>Category:</h5>
                                 <select value={this.state.category} onChange={e => {this.setState({category: e.target.value})}} >
                                 {
-                                    categories.map(category => <option value={category}>{category}</option>)
+                                    filterCategories.map(category => <option value={category.key}>{category.key}</option>)
                                 }
                                 </select> 
                             </div>
