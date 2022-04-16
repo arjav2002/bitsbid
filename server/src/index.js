@@ -38,7 +38,7 @@ cron.schedule('0 7 * * *', () => {
             var It = infoUsr.items;
             for(var i=0 ;i<It.length; i++){
                 console.log(It[i]);
-                obj = await chaneToItem(It[i]);
+                obj = await changeToItem(It[i]);
                 text+="you object "+obj.name+" has got highest bid of : "+obj.highestBid+"\n";
             }
 
@@ -287,7 +287,7 @@ async function checkAuthenticate(req,res,next){
     }
 }
 
-async function chaneToItem(itemId){
+async function changeToItem(itemId){
     return await Item.findById(itemId);
 }
 
