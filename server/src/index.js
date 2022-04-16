@@ -39,7 +39,6 @@ cron.schedule('0 7 * * *', () => {
             for(var i=0 ;i<It.length; i++){
                 console.log(It[i]);
                 obj = await chaneToItem(It[i]);
-                // console.log(obj.name);
                 text+="you object "+obj.name+" has got highest bid of : "+obj.highestBid+"\n";
             }
 
@@ -290,13 +289,6 @@ async function checkAuthenticate(req,res,next){
 
 async function chaneToItem(itemId){
     return await Item.findById(itemId);
-    // var text = "";
-    
-    // for(var i=0; i<It.length; i++){
-    //     var obj = await Item.findById(It[i]);
-    //     text+="you object "+obj.name+" has got highest bid of : "+obj.highestBid.bidAmount+"\n;
-    // }
-    // return text;
 }
 
 const PAGE_SIZE = 9
