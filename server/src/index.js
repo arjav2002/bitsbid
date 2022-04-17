@@ -202,6 +202,7 @@ app.post('/watchlist', checkAuthenticate, async(req, res)=> {
 
 app.post('/bidItem', checkAuthenticate, async(req, res)=> {
     let item;
+    console.log(req.query.bid); 
 
     try {
         obj = await Item.findById(req.query.id);
@@ -211,8 +212,8 @@ app.post('/bidItem', checkAuthenticate, async(req, res)=> {
 
     if(!obj) return res.status(404).send("Item with given id does not exist.");
 
-    if(req.query.bid <= obj.minBid) {
-        return res.status(400).send('bid is lesser than or equal to minimum bid')
+    if(req.query.bid < obj.minBid) {
+        return res.status(400).send('bid is lesser than the minimum bid')
     }
     else {
         item = await Item.findOneAndUpdate({_id: obj.id}, {
